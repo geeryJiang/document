@@ -1,0 +1,8 @@
+ ipconfig				查看本地网络信息
+ 
+ netstat -an			查看所有端口使用情况
+ 
+ netstat -aon|findstr	"端口号" 查看某个端口使用情况
+ 
+ netstat -help			查看netstat命令的使用方法
+ 

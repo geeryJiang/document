@@ -1,0 +1,52 @@
+
+git	stash	存储项目中不想提交的变动
+
+git stash show [<stash>] 显示指定存储版本和当前版本的差异
+
+git stash list 查看存储的版本
+
+git stash pop	将凡在存储中的变动释放出来，并删除 git stash list 中的记录
+
+git stash apply 将凡在存储中的变动释放出来，保留 git stash list 中的记录
+
+git stash drop <stash@{id}> 删除指定id的stash，若不指定id则删除最新的
+
+git stash clear 清除所有的stash
+
+git log -p -2 对比最新两次的commit对象
+
+git log 查看commit的历史
+
+git log -p <filename> 查看某个文件修改的历史
+
+git show <commit-hash-id>	查看某次commit的修改内容
+
+git branch branchName 创建名为branchName的分支
+
+git branch -r		查看远程分支
+
+git checkout branchName 切换到某个分支
+
+git checkout -b 创建并切换到某个分支
+
+git push origin branchName 将分支推送到远程仓库
+
+git checkout * 撤销本地未add的修改
+
+git merge branchName 将branchName分支合并到当前分支上
+
+git pull			抓取远程仓库所有分支更新并合并到本地
+
+git fetch			抓取远程仓库更新
+
+把不小心add进去的文件从staged状态取出来
+git reset [--soft | --mixed | --hard]	
+git reset HEAD <filename>
+
+git rever filename	反转撤销提交。撤销最近的一次提交（commit）
+
+git commit --amend	修改最近一次commit的注解
+
+git config --global user.name ''	修改提交者名称
+git config --global user.emmail 	修改提交者邮箱
+

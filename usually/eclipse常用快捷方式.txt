@@ -1,0 +1,10 @@
+
+shift+alt+j		生成方法注释
+
+alt+shift+o		打开高亮显示
+
+ctrl+shift+t	
+
+ctrl+shift+r
+
+ctrl+shift+
