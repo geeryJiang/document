@@ -18,6 +18,9 @@ STRING类型转换为DATE类型
 
 	SELECT STR_TO_DATE('20180211102950','%Y%m%d%H%i%s') AS t;
 	
+DATE类型转换为STRING类型
+	SELECT DATE_FORMAT(NOW(),'%Y%m%d%H%i%s');
+	
 日期函数
 	当前日期
 	SELECT NOW() AS t;
@@ -29,5 +32,8 @@ STRING类型转换为DATE类型
 	SELECT CURTIME() AS ct,DATE_SUB(CURTIME(),INTERVAL '0 0:1:0' DAY_SECOND) AS ct1;
 	当前日期加一分钟
 	SELECT CURTIME() AS ct,DATE_ADD(CURTIME(),INTERVAL '0 0:1:0' DAY_SECOND) AS ct1;
+	
+拼接两个字段
+	SELECT CONCAT('1','2');
 	
 	
