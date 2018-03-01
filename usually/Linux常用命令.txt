@@ -1,4 +1,6 @@
 
+Linux
+
 su root		进入root权限
 su 用户名	进入用户
 
@@ -8,6 +10,8 @@ netstat(选项)		打印Linux中网络系统的状态信息
 netstat -a		列出所有端口
 netstat -l		只显示监听端口
 netstat -c		持续(每秒)输出网络信息
+
+cat /etc/issue	查看Linux系统版本
 
 ===========================搜索操作==========================
 
