@@ -47,6 +47,9 @@ git rever filename	反转撤销提交。撤销最近的一次提交（commit）
 
 git commit --amend	修改最近一次commit的注解
 
+git rebase -i {id}	修改某次提交的提交信息
+将需要修改的commit message之前的"pick"改为"r"，点击保存按钮。修改方式使用vi形式
+
 git config --global user.name ''	修改提交者名称
 git config --global user.emmail 	修改提交者邮箱
 
