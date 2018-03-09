@@ -48,13 +48,16 @@ git rever filename	反转撤销提交。撤销最近的一次提交（commit）
 git commit --amend	修改最近一次commit的注解
 
 git rebase -i {id}	修改某次提交的提交信息
-将需要修改的commit message之前的"pick"改为"r"，点击保存按钮。修改方式使用vi形式
+将需要修改的commit message之前的"pick"改为"r"，点击保存按钮。修改方式使用vi形式、
+
+git rebase --continue	解决rebase冲突后使用该命令继续rebase过程
 
 git config --global user.name ''	修改提交者名称
 git config --global user.emmail 	修改提交者邮箱
 
 git branch --set-upstream-to=origin/<branch> work_branch 为这个分支设置跟踪信息
 
+tig				查看所有历史修改
 tig show {id}	查看某次提交记录
 tig filename	查看某个文件所有历史修改
 
