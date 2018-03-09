@@ -55,3 +55,6 @@ git config --global user.emmail 	修改提交者邮箱
 
 git branch --set-upstream-to=origin/<branch> work_branch 为这个分支设置跟踪信息
 
+tig show {id}	查看某次提交记录
+tig filename	查看某个文件所有历史修改
+
