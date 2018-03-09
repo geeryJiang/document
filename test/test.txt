@@ -2,6 +2,10 @@
 
 sdfsdf
 
+<<<<<<< HEAD
 sadfas
 
 sdfsqwe
+=======
+sadfas
+>>>>>>> 8a1a0ba4c46621c47f991418ec527812ba5607d9
