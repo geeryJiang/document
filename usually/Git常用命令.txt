@@ -1,4 +1,6 @@
 
+git help <命令>	==》git <命令> --help	查看某命令的帮助文档
+
 git	stash	存储项目中不想提交的变动
 
 git stash show [<stash>] 显示指定存储版本和当前版本的差异
