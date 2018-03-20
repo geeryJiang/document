@@ -27,6 +27,8 @@ git branch branchName 创建名为branchName的分支
 
 git branch -r		查看远程分支
 
+git branch --set-upstream-to=origin/<branch> work_branch 为这个分支设置跟踪信息
+
 git checkout branchName 切换到某个分支
 
 git checkout -b 创建并切换到某个分支
@@ -35,7 +37,9 @@ git push origin branchName 将分支推送到远程仓库
 
 git checkout * 撤销本地未add的修改
 
-git merge branchName 将branchName分支合并到当前分支上
+git merge branchName 将branchName分支合并到当前分支上，默认commit
+
+git merge branchName --no-commit	将branchName分支合并到当前分支上，不commit
 
 git pull			抓取远程仓库所有分支更新并合并到本地
 
@@ -56,8 +60,6 @@ git rebase --continue	解决rebase冲突后使用该命令继续rebase过程
 
 git config --global user.name ''	修改提交者名称
 git config --global user.emmail 	修改提交者邮箱
-
-git branch --set-upstream-to=origin/<branch> work_branch 为这个分支设置跟踪信息
 
 tig				查看所有历史修改
 tig show {id}	查看某次提交记录
