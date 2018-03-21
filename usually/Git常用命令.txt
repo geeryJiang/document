@@ -27,6 +27,10 @@ git branch branchName 创建名为branchName的分支
 
 git branch -r		查看远程分支
 
+git branch -d <branchName>	删除本地分支
+
+git push origin :<branchName> 删除远程分支
+
 git branch --set-upstream-to=origin/<branch> work_branch 为这个分支设置跟踪信息
 
 git checkout branchName 切换到某个分支
