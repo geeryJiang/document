@@ -5,6 +5,9 @@
 向表中添加字段
 	ALTER TABLE tableName ADD fieldName type
 	
+表中删除字段
+	ALTER TABLE tableName DROP fieldName
+	
 修改表中的字段名：
 	ALTER TABLE tableName CHANGE oldFieldName newFieldName type
 	

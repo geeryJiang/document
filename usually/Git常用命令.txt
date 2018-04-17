@@ -19,7 +19,9 @@ git log -p -2 对比最新两次的commit对象
 
 git log 查看commit的历史
 
-git log -p <filename> 查看某个文件修改的历史
+git log -p <filename> 查看某个文件修改的历史详情
+
+git log --pretty=oneline filename	查看某个文件的修改记录
 
 git show <commit-hash-id>	查看某次commit的修改内容
 
@@ -38,6 +40,8 @@ git checkout branchName 切换到某个分支
 git checkout -b 创建并切换到某个分支
 
 git push origin branchName 将分支推送到远程仓库
+
+git push -u origin branchName -f 强制push到远程仓库
 
 git checkout * 撤销本地未add的修改
 
