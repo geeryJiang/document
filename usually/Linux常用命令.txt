@@ -79,6 +79,7 @@ chmod u=rwx,g=rw,o=r filename	为filename文件的u用户设置读写执行权�
 chmod u+x filename				为filename文件的u用户增加执行权限
 
 tar -cvf <tar包路径及名称> <被打包的文件名>	为文件或目录创建档案（备份文件）
+tar -zxvf <文件名> 解压tar包
 
 =============================================================
 
