@@ -138,7 +138,16 @@ history [-raw] histfile
 !!	执行上一个指令
 !command	由最近的指令向前搜寻以command开头的那个指令
 
+source或"." file	将设定档的内容读进来目前的shell环境中
 
-
-
+stty -a	列出目前环境中所有的按键列表
+^	表示Ctrl按键，例:^C ==> Ctrl + c
+eof：End of file 的意思，代表结束输入
+erase：向后删除字符
+intr：送出一个interrupt（中断）的讯号给目前正在run的程序
+kill：删除在目前指令列上的所有文字
+quit：送出一个quit的讯号给目前正在run的程序
+start：在某个程序停止后，重新启动它的output
+stop：停止目前屏幕的输出
+susp：送出一个terminal stop的讯号给正在run的程序
 

@@ -29,12 +29,17 @@ help <命令名称>	查看某命令的帮助文档
 env|grep JAVA
 
 ps -ef | grep []	查看某个应用的进程状态
+lsof -i :6379	查看某端口占用情况
 ps	用于报告当前系统的进程状态
 
 kill -9 PID		强制杀死进程
 
 jar -xvf fileName.jar	解压jar包
 jar -cvfM0 filename.jar	把当前目录下的所有文件打包成filename.jar
+
+date -R 查看当前时区
+
+cat	
 
 ===========================搜索操作==========================
 
