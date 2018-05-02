@@ -1,0 +1,26 @@
+
+redis-service redis.conf	启动redis服务
+
+redis-cli -h 远程服务IP -p 端口号	启动客户端
+
+select	库号(0-15)	选择库
+
+dbsize	查看当前数据库的key的数量
+
+keys k?	查看所有以“k”开头的key
+
+exists key	查看某个key是否存在
+
+flushDB	清除当前库的所有数据
+
+flushAll	清除所有库的所有数据
+
+move key 库号	将某个key剪切到其他库
+
+del key	删除指定key的数据
+
+expire key 秒数	为给定的key设置过期时间
+
+ttl key 查看还有多久过期，-1表示永不过期，-2表示已过期
+
+type key 查看指定key的类型

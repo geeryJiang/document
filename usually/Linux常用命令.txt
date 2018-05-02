@@ -34,9 +34,6 @@ ps	用于报告当前系统的进程状态
 
 kill -9 PID		强制杀死进程
 
-jar -xvf fileName.jar	解压jar包
-jar -cvfM0 filename.jar	把当前目录下的所有文件打包成filename.jar
-
 date -R 查看当前时区
 
 cat	
@@ -111,6 +108,10 @@ unzip -v 123.zip	查看123.zip里面的内容
 unzip -t 123.zip	验证123.zip是否完整
 
 tar -cvf <tar包路径及名称> <被打包的文件名>	为文件或目录创建档案（备份文件）
+tar -zxvf fileName.tar.gz	解压tar包
+
+jar -xvf fileName.jar	解压jar包
+jar -cvfM0 filename.jar	把当前目录下的所有文件打包成filename.jar
 
 =============================================================
 
