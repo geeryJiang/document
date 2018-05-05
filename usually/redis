@@ -51,7 +51,8 @@ zrank key member  返回有序集key中成员member的排名，其中有序集�
 zscore key member 返回有序集key中，成员member的score值
 
 
-
+info replication  查看当前server的状态
+slaveof ip 端口号
 
 
 
