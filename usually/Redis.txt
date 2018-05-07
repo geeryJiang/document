@@ -1,4 +1,6 @@
 
+-------------------- key --------------------
+
 redis-service redis.conf	启动redis服务
 
 redis-cli -h 远程服务IP -p 端口号	启动客户端
@@ -9,18 +11,90 @@ dbsize	查看当前数据库的key的数量
 
 keys k?	查看所有以“k”开头的key
 
-exists key	查看某个key是否存在
+exists key	查看某个key是否存在,存在返回1，否则返回0
 
 flushDB	清除当前库的所有数据
 
 flushAll	清除所有库的所有数据
 
-move key 库号	将某个key剪切到其他库
+move key 库号	将某个key剪切到目标库，若当前库没有对应key或目标库存在相同的key则move无效，成功返回1，否则返回0
 
-del key	删除指定key的数据
+del key[key...]	删除指定key的数据,返回被删除key的数量
 
-expire key 秒数	为给定的key设置过期时间
+expire key 秒数	为给定的key设置过期时间，当过期是会被删除，设置成功返回1
+expireat key 时间戳(秒)	设定过期时间，到达指定时间戳则会过期
 
-ttl key 查看还有多久过期，-1表示永不过期，-2表示已过期
+pexpire key 毫秒	同expire
+pexpireat key 时间戳(毫秒)	同expireat
+
+persist key	移除给定key的生存时间，移除成功返回1
+
+ttl key 查看还有多久过期，以秒为单位，-1表示永不过期，-2表示已过期
+pttl key	类似于ttl，以毫秒为单位
 
 type key 查看指定key的类型
+
+OBJECT idletime key	返回给定key自储存以来的空闲时间（秒）
+
+rename key newkey	将key改名为newkey，若newkey已经存在，则被覆盖
+renamenx key newkey	当且仅当newkey不存在时，将key改名为newkey
+
+sort key [desc] [alpha]	[limit index num]返回给定key的排序后的值，默认对数字排序，若对字符串进行排序，则需要在最后加上“alpha”,limit获取结果范围
+
+
+-------------------- String --------------------
+
+set key value	初始化一个string类型的数据
+setex key seconds value	设置key-value的同时将key的生存时间设置为seconds(秒)	
+setnx key value	当且仅当key不存在时添加key-value
+mset key value [key value ...]	同时设置一个或多个key-value对
+msetnx key value [key value ...]	当且仅当所有key都不存在时，设置
+
+
+get key	获取指定key的value
+mget key[key...] 返回所有给定key的值
+
+append key value	若key存在，则在原值末尾添加value，若不存在则直接新增
+
+decr key	将key中储存的数字值减一，返回执行decr后的值，若key不存在，则初始化为0后减量 
+decrby key decrement(整数)	将指定key的value减量decrement，若key不存在，则初始化为0后减量 
+
+incr key	将key中储存的数字值增一，返回执行decr后的值，若key不存在，则初始化为0后增量
+incrby key decrement(整数)	将指定key的value增量decrement，若key不存在，则初始化为0后增量
+incrbyfloat key increment(小数)	指定key的value增量increment，若key不存在，则初始化为0后增量
+
+getset key value	将给定key的值设置为value，并返回key的旧值
+
+strlen key	返回key所储存的字符串的长度
+
+
+-------------------- Hash --------------------
+
+hset key field value	将hash表key中的域field的值设为value，成功返回1
+hmset key field value[field value...]	添加多个，存在覆盖问题
+hsetnx key field value	当且仅当field不存在时，添加
+
+hget key field	返回hash表key中给定域field的值
+hmget key field[field...]	返回多个值
+
+hdel key field[field...]	删除hash表中的一个或多个指定域
+
+hexists key field	给定域field是否存在，存在返回1
+
+hgetall key	返回hash表key中，所有的域和值
+hkeys key	返回hash表key中的所有域
+hvals key	返回hash表key中所有域的值
+
+hlen key	返回hash表key中域的数量
+
+hstrlen key field	返回key中对应field的值的长度
+
+hincrby key field decrement	同incrby
+hincrbyfloat key field increment	同incrbyfloat
+
+
+-------------------- List --------------------
+
+
+
+

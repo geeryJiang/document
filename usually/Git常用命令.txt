@@ -41,7 +41,7 @@ git checkout -b 创建并切换到某个分支
 
 git push origin branchName 将分支推送到远程仓库
 
-git push -u origin branchName -f 强制push到远程仓库
+git push -f origin branchName	强制push到远程仓库
 
 git checkout * 撤销本地未add的修改
 
