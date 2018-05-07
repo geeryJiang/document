@@ -1,0 +1,153 @@
+
+-------------------- key --------------------
+
+redis-service redis.conf	启动redis服务
+
+redis-cli -h 远程服务IP -p 端口号	启动客户端
+
+select	库号(0-15)	选择库
+
+dbsize	查看当前数据库的key的数量
+
+keys k?	查看所有以“k”开头的key
+
+exists key	查看某个key是否存在,存在返回1，否则返回0
+
+flushDB	清除当前库的所有数据
+
+flushAll	清除所有库的所有数据
+
+move key 库号	将某个key剪切到目标库，若当前库没有对应key或目标库存在相同的key则move无效，成功返回1，否则返回0
+
+del key[key...]	删除指定key的数据,返回被删除key的数量
+
+expire key 秒数	为给定的key设置过期时间，当过期是会被删除，设置成功返回1
+expireat key 时间戳(秒)	设定过期时间，到达指定时间戳则会过期
+
+pexpire key 毫秒	同expire
+pexpireat key 时间戳(毫秒)	同expireat
+
+persist key	移除给定key的生存时间，移除成功返回1
+
+ttl key 查看还有多久过期，以秒为单位，-1表示永不过期，-2表示已过期
+pttl key	类似于ttl，以毫秒为单位
+
+type key 查看指定key的类型
+
+OBJECT idletime key	返回给定key自储存以来的空闲时间（秒）
+
+rename key newkey	将key改名为newkey，若newkey已经存在，则被覆盖
+renamenx key newkey	当且仅当newkey不存在时，将key改名为newkey
+
+sort key [desc] [alpha]	[limit index num]返回给定key的排序后的值，默认对数字排序，若对字符串进行排序，则需要在最后加上“alpha”,limit获取结果范围
+
+
+-------------------- String --------------------
+
+set key value	初始化一个string类型的数据
+setex key seconds value	设置key-value的同时将key的生存时间设置为seconds(秒)	
+setnx key value	当且仅当key不存在时添加key-value
+mset key value [key value ...]	同时设置一个或多个key-value对
+msetnx key value [key value ...]	当且仅当所有key都不存在时，设置
+
+
+get key	获取指定key的value
+mget key[key...] 返回所有给定key的值
+
+append key value	若key存在，则在原值末尾添加value，若不存在则直接新增
+
+decr key	将key中储存的数字值减一，返回执行decr后的值，若key不存在，则初始化为0后减量 
+decrby key decrement(整数)	将指定key的value减量decrement，若key不存在，则初始化为0后减量 
+
+incr key	将key中储存的数字值增一，返回执行decr后的值，若key不存在，则初始化为0后增量
+incrby key decrement(整数)	将指定key的value增量decrement，若key不存在，则初始化为0后增量
+incrbyfloat key increment(小数)	指定key的value增量increment，若key不存在，则初始化为0后增量
+
+getset key value	将给定key的值设置为value，并返回key的旧值
+
+strlen key	返回key所储存的字符串的长度
+
+
+-------------------- Hash --------------------
+
+hset key field value	将hash表key中的域field的值设为value，成功返回1
+hmset key field value[field value...]	添加多个，存在覆盖问题
+hsetnx key field value	当且仅当field不存在时，添加
+
+hget key field	返回hash表key中给定域field的值
+hmget key field[field...]	返回多个值
+
+hdel key field[field...]	删除hash表中的一个或多个指定域
+
+hexists key field	给定域field是否存在，存在返回1
+
+hgetall key	返回hash表key中，所有的域和值
+hkeys key	返回hash表key中的所有域
+hvals key	返回hash表key中所有域的值
+
+hlen key	返回hash表key中域的数量
+
+hstrlen key field	返回key中对应field的值的长度
+
+hincrby key field decrement	同incrby
+hincrbyfloat key field increment	同incrbyfloat
+
+
+------------------ list ------------------
+
+lpush key value[value...] 将一个或多个值value从左到右依次插入到列表key的表头
+rpush key value[value...] 将一个或多个值value从右到左依次插入到列表key的表头
+lrange key start stop 返回列表key中指定区域内的元素
+
+lpushx key value  将值插入到列表key的表头，当且仅当key存在并且是一个列表
+rpushx key value  将值插入到列表key的表尾，当且仅当key存在并且是一个列表
+
+lpop key  移除并返回列表key的头元素
+rpop key  移除并返回列表key的尾元素
+rpoplpush source destination  将source弹出的尾元素插入到列表destination头
+
+blpop key[key...] timeout 弹出list类型指定key列表的头个非空元素，若无则阻塞，直到等待超时或发现可弹出元素
+brpop key[key...] timeout 弹出list类型指定key列表的尾部非空元素，若无则阻塞，直到等待超时或发现可弹出元素
+lindex key index  返回列表key中，下表为index的元素，0为第一个元素
+linsert key before|after pivot value  将value插入到列表key的pivot之前或者之后
+llen key 返回指定列表的长度
+
+------------------ set ------------------
+
+sadd key member[member...] 将一个或多个member元素加入到集合key当中，已经存在于集合的member元素将被忽略
+smembers key  返回集合key中的所有成员
+
+scard key   返回集合key中元素的数量
+sismember key member  判断member元素是否集合key的元素，是返回1，否则返回0
+smove source destination member 将member元素从source集合移动到destination集合
+spop key  移除并返回集合中的一个随机元素
+srem key member[member...]  移除集合key中的一个或多个元素，不存在的member元素会被忽略
+
+sdiff key1[key2...] 返回集合key1中存在，但key2中不存在的元素集合
+sdiffstore destination key1[key2...]  将集合key1中存在，key2中不存在的元素集合存放到集合destination中，若destination存在，则覆盖
+sinter key1[key2...] 返回集合key1和集合key2的交集
+sinterstore destination key1[key2...] 将集合key1和集合key2的交集存放到集合destination中，若destination存在，则覆盖
+sunion key1[key2...]  返回集合key1和集合key2的并集
+sunionstore destination key1[key2...] 将集合key1和集合key2的并集存放到集合destination中，若destination存在，则覆盖
+
+
+------------------ Sortedset ------------------
+
+zadd key score member [[score member]...] 将一个或多个member元素及其score值加入到有序集key中
+zrange key start stop [withscores]  返回有序集key中，指定区间内的成员，其中成员的位置按score值递增来排序
+zrangebyscore key min max [withscores]  返回有序集key中，所有score值介于min和max之间的成员
+zrem key member[member...]  移除有序集key中的一个或多个成员，不存在的成员被忽略
+zrevrank key member 返回有序集key中成员member的排名，其中有序集成员按score值递减排序
+zrevrange key start stop [withscores] 返回有序集key中，指定区间内的成员，其中有序集成员按score值递减排序
+zrevrangebyscore key max min [withscores] 返回有序集key中，score值介于max和min之间的所有成员，有序集成员按score值递减排序
+zcard key 返回有序集key的元素个数
+zcount key min max  返回有序集key中，score值再min和max之间的成员的数量
+zrank key member  返回有序集key中成员member的排名，其中有序集成员按score值递增排序
+zscore key member 返回有序集key中，成员member的score值
+
+
+info replication  查看当前server的状态
+slaveof ip 端口号
+
+
+

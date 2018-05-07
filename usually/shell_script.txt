@@ -1,0 +1,153 @@
+
+alias lm='ls -al'	给ls -al 取别名 lm
+
+man bash	查看bash手册
+
+type -a command	查看该command是否是bash的内建命令
+
+指令格式：command [-options] parameter1 parameter2
+			指令	选项		参数1		参数2
+
+\	跳脱其后紧接着的下一个字符，例如:\Enter
+
+echo ${变量名}	打印变量值
+
+变量名=value	设置或修改变量
+unset 变量名	取消变量
+export	变量名	将变量设置为环境变量
+export	显示所有的环境变量
+
+变量设置规则：
+1.变量与变量内容以等号[=]连接
+2.等号两边不能有空格符
+3.变量名称只能是英文字母和数字，但是数字不能是开头字符
+4.若有空格符可以使用双引号["]或单引号[']来将变量内容结合起来，但须要特别注意，双引号内的特殊字符可以保有变量特性，但是单引号内的特殊字符则仅为一般字符
+5.必要时需要以跳脱字符[\]来将特殊符号(如Enter,$,\,空格符,等)变成一般符号
+6.在一串指令中，还需要藉由其它的指令提供的信息，可以使用quote[` command`]，``中的命令将会被先执行
+7.若该变量为扩增变量内容时，则需以双引号及$变量名称 如["$PATH":/home]继续累加内容
+8.若该变量需要在其它子程序执行，则需要以export来使变量变成环境变量 如[export PATH]
+9.通常大写字符为系统预设变量，自行设定变量可以使用小写字符，方便判断
+
+env 或 export	查看所有的环境变量
+
+set	查看当前shell环境下所有变量
+
+PS1变量内的特殊符号代表意义
+
+\d:日期 格式为Weekday Month Date
+\H:完整的主机名称
+\h:仅取主机名称的第一个名字
+\t:显示时间，24小时格式，HH:MM:SS
+\T:显示时间，12小时格式
+\A:显示时间，24小时格式，HH:MM
+\u:目前使用者的账户名称
+\v:BASH的版本信息
+\w:完整的工作目录名称
+\W:利用basename取得工作目录名称
+\#:下达的第几个命令
+\$:提示字符，如果是root时，提示字符为#
+
+设置PS1
+PS1='[\u@\h \w \A #\#]\$'
+
+?:上个执行的指令所回传的值，若上一执行的指令执行成功，则会回传一个0值;若执行失败报错，则会回传一个错误码。
+
+locale -a 查看当前系统支持的语系
+
+locale 查看当前系统的编码
+
+LANG			主语言的环境
+LC_CTYPE		字符辨识的编码
+LC_NUMERIC		数字系统的显示讯息
+LC_TIME			时间系统的显示数据
+LC_COLLATE		字符串的比较与排序等
+LC_MONETARY		币值格式的显示等
+LC_MESSAGES		讯息显示的内容，如菜单、错误讯息等
+LC_ALL			语言环境的整体设定
+
+read [-pt] variable	读取来自键盘输入的变量
+-p : 后面可以接提示字符
+-t : 后面可以接等待的秒数
+
+declare/typeset [-aixr] variable	宣告变量的属性
+-a	将后面的variable定义成为数组(array)
+-i	将后面的variable定义成整数数字(integer)
+-x	用法与export一样，就是将后面的variable变成环境变量
+-r	将一个variable的变量设定成readonly，该变量不可被更改内容，也不能unset
+
+数组属性 array 说明
+数组的设定方式：var[index]=content
+
+ulimit	与档案系统及程序的限制关系
+ulimit [-SHacdflmnpstuv] [配额]
+-H	hard limit严格的设定，必定不能超过设定的值
+-S	soft limit警告的设定，可以超过这个设定值，但是会有警告讯息
+-a	列出所有的限制额度
+-c	可建立的最大核心档案容量
+-d	程序数据可使用的最大容量
+-f	此shell可以建立的最大档案容量单位Kbytes
+-l	可用于锁定的内存量
+-p	可用于管线处理的数量
+-t	可使用的最大CPU时间(秒)
+-u	单一使用者可以使用的最大程序数量
+
+
+variable=/home/vbird/testing/testing.x.sh
+
+echo ${variable##/*/}	若变量以"/"开头，则删除开头"/"与最后一个"/"之间的所有数据
+testing.x.sh
+echo ${variable#/*/}	若变量以"/"开头，则删除开头"/"与第二个"/"之间的所有数据
+vbird/testing/testing.x.sh
+
+echo ${variable%%/*}	"%"比对的是最后面那个字符的意思
+	<==被删除光了
+echo ${variable%/*}
+/home/vbird/testing
+"%%/*"删除最长的那个/*,%/*则是删除最短的那个
+
+将variable变量中的testing取代为TEST
+echo ${variable/testing/TEST}
+/home/vbird/TEST/testing.x.sh
+echo ${variable//testing/TEST}
+/home/vbird/TEST/TEST.x.sh
+变量后接"/"，表示后面进行取代工作，且仅取代第一个;"//"则取代所有
+
+var与str为变量，针对str值来设定var的值."expr"为字符串
+var=${str-expr}
+var=${str:-expr}
+var=${str+expr}
+var=${str:+expr}
+var=${str=expr}
+var=${str:=expr}
+var=${str?expr}
+var=${str:?expr}
+
+命令别名设定：alias(生成别名),unalias(取消别名)
+格式：alias [别名]='指令 参数'
+格式：unalias [别名]
+alias	显示目前所有的命令别名
+
+历史命令：history
+history [n]	列出最近的n笔命令列表
+history -c 将目前的shell中的所有history内容全部消除
+history [-raw] histfile
+-a	将目前新增的history指令新增如histfile中，若没有hisfile，则预设写入~/.bash_history
+-r	将histfile的内容读到目前这个shell的history记忆中
+-w	将目前的history记忆内容写入histfile中
+
+!!	执行上一个指令
+!command	由最近的指令向前搜寻以command开头的那个指令
+
+source或"." file	将设定档的内容读进来目前的shell环境中
+
+stty -a	列出目前环境中所有的按键列表
+^	表示Ctrl按键，例:^C ==> Ctrl + c
+eof：End of file 的意思，代表结束输入
+erase：向后删除字符
+intr：送出一个interrupt（中断）的讯号给目前正在run的程序
+kill：删除在目前指令列上的所有文字
+quit：送出一个quit的讯号给目前正在run的程序
+start：在某个程序停止后，重新启动它的output
+stop：停止目前屏幕的输出
+susp：送出一个terminal stop的讯号给正在run的程序
+
