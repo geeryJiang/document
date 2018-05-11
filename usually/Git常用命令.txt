@@ -1,4 +1,17 @@
 
+-------------------------- 将本地项目推送到远程仓库 --------------------------
+
+git init
+git add README.md
+git commit -m "first commit"
+#注意https://github.com/geeryJiang/demo.git需要手动在github上创建
+git remote add origin https://github.com/geeryJiang/demo.git
+git push -u origin master
+
+-------------------------- 将本地项目推送到远程仓库 --------------------------
+
+git add -f filename	强制添加到版本控制
+
 git help <命令>	==》git <命令> --help	查看某命令的帮助文档
 
 git	stash	存储项目中不想提交的变动
