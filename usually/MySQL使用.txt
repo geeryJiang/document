@@ -1,3 +1,16 @@
+在服务器上查看MYSQL的版本
+	mysql --help|grep Distrib
+
+新建数据表
+CREATE TABLE `TABLE_NAME`(
+	`ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字段注释信息',
+	`fieldName` type DEFAULT NULL COMMENT '字段注释信息',
+	`fieldName` type DEFAULT NULL COMMENT '字段注释信息',
+	PRIMARY KEY (`ID`),
+	UNIQUE KEY `uniquekeyName` (`fieldName`,`fieldName`...)
+)ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=UTF8 COMMENT '表注释信息';
+
+
 
 插入语句：若表中有自增序列，则可以将该列置未‘0’ 或 ‘null’,这样mysql将会自动处理该列
 	如：insert into tableName values(0,'name');
