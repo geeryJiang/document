@@ -10,3 +10,5 @@ ctrl+shift+t
 ctrl+shift+r
 
 Ctrl+2,L	等号左边自动补齐快捷键
+
+Alt + ↑/↓	向上/下移动选中代码

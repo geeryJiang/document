@@ -70,7 +70,7 @@ git fetch			抓取远程仓库更新
 git reset [--soft | --mixed | --hard]	
 git reset HEAD <filename>
 
-git rever filename	反转撤销提交。撤销最近的一次提交（commit）
+git rever <commit>	反转撤销某次提交
 
 git commit --amend	修改最近一次commit的注解
 

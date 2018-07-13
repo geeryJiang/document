@@ -1,6 +1,9 @@
 
 在服务器上查看MYSQL的版本
 	mysql --help|grep Distrib
+	
+默认表名
+	如：select * from dual ...;
 
 新建数据表
 CREATE TABLE `TABLE_NAME`(
@@ -11,14 +14,32 @@ CREATE TABLE `TABLE_NAME`(
 	UNIQUE KEY `uniquekeyName` (`fieldName`,`fieldName`...)
 )ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=UTF8 COMMENT '表注释信息';
 
+插入语句：若表中有自增序列，则可以将该列置未‘0’ 或 ‘null’,这样mysql将会自动处理该列
+	如：INSERT INTO tableName values(0,'name');
+	INSERT INTO tableName(属性1，属性2...) SELECT '值1','值2'... FROM tableName WHERE ...
+	
+	
+更新数据：
+	UPDATE [LOW_PRIORITY] [IGNORE] tableName
+	SET assignment_list
+	[WHERE where_condition]
+	[ORDER BY ...]
+	[LIMIT ROW_COUNT]
+
 删除表
-DROP TABLE tableName;
+	DROP TABLE tableName;
 
 清除表中所有的数据，但不删除表
-DELETE TABLE tableName;
+	DELETE TABLE tableName;
 
-插入语句：若表中有自增序列，则可以将该列置未‘0’ 或 ‘null’,这样mysql将会自动处理该列
-	如：insert into tableName values(0,'name');
+删除数据
+	DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
+	FROM
+	  tbl_name [PARTITION (partition_name[,partition_name]...)]
+	[WHERE where_condition ]
+	[ORDER BY ...]
+	[LIMIT ROW_COUNT];
+
 	
 向表中添加字段
 	ALTER TABLE tableName ADD fieldName type
@@ -59,7 +80,8 @@ DATE类型转换为STRING类型
 	
 拼接两个字段
 	SELECT CONCAT('1','2');
-		
+
+
 索引
 	在mysql中若更新条件为非索引字段，则在做update操作时将对整张表进行锁定
 	
@@ -111,6 +133,7 @@ DATE类型转换为STRING类型
 			rows:MYSQL认为必须检查的用来返回请求数据的行数
 			Extra:关于MQSQL如何解析查询的额外信息。
 		
-	
+Limit 使用，获取指定结果集数量
+SELECT * FROM tableName LIMIT [offset,]rows|rows;
 	
 	
