@@ -1,4 +1,12 @@
 
+-------------------------- git 处理如下报错问题 --------------------------
+1、stderr: error:bad signature
+fatal: index file corrupt
+
+处理方式：
+输入：$ rm -f .git/index
+在输入：$ git reset
+
 -------------------------- 将本地项目推送到远程仓库 --------------------------
 
 git init

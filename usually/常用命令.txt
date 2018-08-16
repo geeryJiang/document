@@ -1,0 +1,4 @@
+jmap常用命令
+	1.查看整个jvm内存状态：jmap -heap[pid]
+	2.查看jvm堆中对象详细占用情况：jmap -histo[pid]
+	3.导出内存信息文件：jmap -dump:format=b,file=test.dump [pid]

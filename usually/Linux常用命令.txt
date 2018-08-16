@@ -16,6 +16,7 @@ cat /etc/issue	查看Linux系统版本
 df -h 	查看磁盘剩余空间
 
 du -s	仅显示总计，只列出最后加总的值
+du -sh *
 
 ls -l ==>ll	列出文件和文件夹的详细信息。
 ls -lh		列出可读文件和文件夹详细信息。
@@ -139,6 +140,11 @@ scp -p file_source file_target	保留原文件的修改时间，访问时间和�
 scp -P port	file_source file_target 指定数据传输用到的端口号
 
 =============================================================
+
+ssh	[-l user][-p port][user@]hostname	远程登录指定服务器
+
+more fileName	显示文本文件的内容，支持vi中的关键字定位操作
+less -l fileName	与more命令相似，允许用户向前或向后浏览文件，-l：搜索时忽略大小写的差异
 
 
 
