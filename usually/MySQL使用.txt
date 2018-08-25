@@ -4,6 +4,10 @@
 	
 默认表名
 	如：select * from dual ...;
+	
+设置自动提交
+SET SESSION AUTOCOMMIT=0	自动提交
+SET SESSION AUTOCOMMIT=1	手动提交
 
 新建数据表
 CREATE TABLE `TABLE_NAME`(
