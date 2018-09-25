@@ -46,10 +46,14 @@ CREATE TABLE `TABLE_NAME`(
 
 	
 向表中添加字段
-	ALTER TABLE tableName ADD fieldName type
+	ALTER TABLE tableName ADD fieldName type DEFAULT COMMENT;
+	
+	ALTER TABLE tableName ADD (fieldName type DEFAULT COMMENT,fieldName type DEFAULT COMMENT,...);
 	
 表中删除字段
-	ALTER TABLE tableName DROP fieldName
+	ALTER TABLE tableName DROP fieldName;
+	
+	ALTER TABLE tableName DROP fieldName,DROP fieldName,...;
 	
 修改表中的字段名：
 	ALTER TABLE tableName CHANGE oldFieldName newFieldName type
@@ -139,5 +143,9 @@ DATE类型转换为STRING类型
 		
 Limit 使用，获取指定结果集数量
 SELECT * FROM tableName LIMIT [offset,]rows|rows;
+
+mysql中使用正则表达式（REGEXP）
+SELECT * FROM tbl_dept WHERE id REGEXP '正则表达式';
+
 	
 	
