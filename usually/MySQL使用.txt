@@ -147,5 +147,28 @@ SELECT * FROM tableName LIMIT [offset,]rows|rows;
 mysql中使用正则表达式（REGEXP）
 SELECT * FROM tbl_dept WHERE id REGEXP '正则表达式';
 
+select count(1) from t_test where test1=1 and respmsg not in (select respmsg from t_test where respmsg like '可用%' or respmsg like '通用%');
+
+数据备份
+select * from tableName into outfile "/opt/..."(路径) fields terminated by "|";
+
+数据还原
+load data infile "/opt/..." replace into table tableName fields terminated by "|";
+
+创建存储过程
+CREATE PROCEDURE pro_name(in num int)
+BEGIN
+DECLARE a <= num DO
+INSERT INTO tbl_dept (dept_name) VALUES ('开发部');
+SET a = a + 1;
+END WHILE;
+END
+
+调用存储过程
+CALL pro_name(1);
+
+删除存储过程
+DROP PROCEDURE pro_name;
+
 	
 	
