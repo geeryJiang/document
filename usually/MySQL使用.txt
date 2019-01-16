@@ -27,6 +27,9 @@ CREATE TABLE `TABLE_NAME`(
 	如：INSERT INTO tableName values(0,'name');
 	INSERT INTO tableName(属性1，属性2...) SELECT '值1','值2'... FROM tableName WHERE ...
 	
+	向数据库中插入特殊符号，需要特殊处理
+	例：insert into table values('{\"jymd\":\"3004\",\"dqdh\":\"04\"}');
+	
 	
 更新数据：
 	UPDATE [LOW_PRIORITY] [IGNORE] tableName
