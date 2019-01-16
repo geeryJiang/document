@@ -150,6 +150,10 @@ less -l fileName	与more命令相似，允许用户向前或向后浏览文件�
 
 tcpdump tcp -i any port xxx -w a.cap
 
+tcpdump dst host 172.16.7.206 and port 80 -w /tmp/xxx.cap
+dst 用于指定目标路径
+src 用于指定源路径
+
 tcpdump tcp -i eth1 -t -s 0 -c 100 and dst port ! 22 and src net 192.168.1.0/24 -w ./target.cap
 
 (1)tcp: ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型

@@ -9,6 +9,11 @@
 SET SESSION AUTOCOMMIT=0	自动提交
 SET SESSION AUTOCOMMIT=1	手动提交
 
+锁表
+SET SESSION AUTOCOMMIT=1	手动提交
+update tableName set id=id where id=id;
+commit;
+
 新建数据表
 CREATE TABLE `TABLE_NAME`(
 	`ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字段注释信息',

@@ -1,3 +1,5 @@
+生成dump文件
+	jmap -dump:format=b,file=jamp_core_`hostname`.log `ps -ef | grep java | grep -v grep | awk '{print $2}'`
 jmap常用命令
 	1.查看整个jvm内存状态：jmap -heap[pid]
 	2.查看jvm堆中对象详细占用情况：jmap -histo[pid]
