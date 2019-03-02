@@ -1,0 +1,16 @@
+添加apache转发负载
+在/opt/apache2063/dist/conf/finance/homepage.conf文件中添加
+ProxyPass /cib-clear-mock-web balancer://proxy2/
+<Proxy balancer://proxy2>
+    BalancerMember http://10.1.22.245:8080/cib-clear-mock-web/
+    BalancerMember http://10.1.22.76:8080/cib-clear-mock-web/
+</Proxy>
+
+设置KeepAliveTimeout等参数
+修改/opt/apache2063/dist/conf/extra/httpd-default.conf中相关参数
+然后将/opt/apache2063/dist/conf/httpd.conf中的#Include conf/extra/httpd-default.conf打开
+
+关闭命令
+ps -ef | grep httpd | awk '{print $2}' | xargs kill -9
+启动命令
+./httpd -k start
