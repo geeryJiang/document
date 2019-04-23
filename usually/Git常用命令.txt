@@ -1,4 +1,4 @@
-
+﻿
 -------------------------- git 处理如下报错问题 --------------------------
 1、stderr: error:bad signature
 fatal: index file corrupt
@@ -90,6 +90,9 @@ git rebase --continue	解决rebase冲突后使用该命令继续rebase过程
 
 git config --global user.name ''	修改提交者名称
 git config --global user.emmail 	修改提交者邮箱
+
+git config --global --edit
+git commit --amend --reset-author
 
 tig				查看所有历史修改
 tig show {id}	查看某次提交记录

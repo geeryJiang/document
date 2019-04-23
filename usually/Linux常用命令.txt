@@ -1,4 +1,4 @@
-
+﻿
 ifconfig	查看服务器ip等信息
 
 su root		进入root权限
@@ -165,6 +165,11 @@ tcpdump tcp -i eth1 -t -s 0 -c 100 and dst port ! 22 and src net 192.168.1.0/24 
 (7)src net 192.168.1.0/24 : 数据包的源网络地址为192.168.1.0/24
 (8)-w ./target.cap : 保存成cap文件，方便用ethereal(即wireshark)分析
 
+
+在AIX环境抓包
+iptrace -d 10.1.10.56 -p 8080 -b trace.log
+ipreport trace.log >t.log
+vi t.log
 
 =============================================================
 
