@@ -270,6 +270,145 @@ in like between and
 order by desc(asc)
 
 长度 length()
-拼接 concat()
-大写 upper()
-小写 lower()
+拼接 concat('a','b')
+大写 upper('joHn')
+小写 lower('joHn')
+截取 substr('abhd',3)
+截取 substr('abhd',1,3)
+获取下标 instr('dbsnjs','s')
+去空格 trim(' sjjsj ')
+去前后a trim('a' from 'aaaasjjsaajaaa')
+左填充 lpad('殷素素',10,'*')
+又填充 rpad('殷素素',10,'*')
+替换 replace('张三'，'三'，'四')
+
+四舍五入
+round(1.65)
+round(1.657,2)
+
+向上取整
+cell()
+
+向下取整
+floor()
+
+截取
+truncate(1.65,1)
+
+取余
+mod()
+
+日期函数
+now()
+curdate()
+curtime()
+year()
+month()
+monthname()
+
+%Y(四位年)
+%y(两位年)
+%m(月01-12)
+%c(月1-12)
+%d(日01...)
+%H(小时24)
+%h(小时12)
+%i(分00-59)
+%s(秒00-59)
+
+str_to_date('1964-03-2','%Y-%c-%d')
+
+date_format
+
+数据库版本
+version()
+
+仓库
+datebase()
+
+用户
+user()
+
+
+以下函数null将不参与运算
+SUM()
+AVG()
+MIN()
+MAX()
+COUNT()
+
+SELECT 查询列表
+FROM 表1 [连接类型]
+JOIN 表2
+ON 连接条件
+[WHERE 筛选条件]
+[GROUP BY 分组]
+[HAVING 筛选条件]
+[ORDER BY 排序列表]
+
+连接类型：
+内连接：INNER
+外连接：
+    左外：LEFT [OUTER]
+    右外：RIGHT [OUTER]
+    全外：FULL [OUTER]
+交叉连接：CROSS
+
+
+子查询：
+    SELECT 后面：
+        只支持标量子查询(结果集只有一行一列)
+    FROM 后面：
+        表子查询(结果集一般有多行多列)
+    WHERE 或 HAVING 后面：
+        标量子查询
+        列子查询(结果集有一列多行)
+        行子查询(结果集有一行多列)
+    EXISTS
+        表子查询
+    标量子查询一般搭配单行操作符使用如：> < >= <= = <>
+    列子查询一般搭配多行操作符使用如：IN,ANY/SOME,ALL
+    子查询先于主查询
+
+
+分页查询
+    SELECT 查询列表 FROM 表名
+    [WHERE 分组前条件
+     GROUP BY 分组字段
+     HAVING 分组后条件
+     ORDER BY]
+    LIMIT 起始索引，条数；
+
+    公式：page显示页数，size每页条数
+    SELECT 查询列表
+    FROM 表名
+    LIMIT (page-1)*size,size
+
+UNION联合查询
+    查询语句1
+    UNION
+    查询语句2
+
+    特点：
+        1、要求多条查询语句的查询列数保持一致
+        2、要求多条查询语句查询的每一列的类型和顺序最好一致
+        3、union关键字默认去重，union all 可以包含重复项
+
+TRUNCATE语句
+    TRUNCATE TABLE 表名；
+    该语句不允许添加WHERE条件
+    该语句不支持回滚
+
+INSERT
+UPDATE
+DELETE
+
+CREATE
+ALTER
+DROP
+
+创建库
+    CREATE DATABASE IF NOT EXISTS 库名；
+    ALTER DATABASE 库名 CHARACTER SET utf-8
+    DROP DATABASE IF EXISTS 库名；
+
