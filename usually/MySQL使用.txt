@@ -240,5 +240,36 @@ WHERE
 	   )
       ) t );
 
-	
-	
+
+查看表结构
+DESC 表名/视图名
+
+显示支持的存储引擎
+show engines
+
+show variables like ''
+
+去重
+distinct
+
+> < = <> != >= <=	
+
+and or not 
+
+in like between and
+
+占位符
+%  ＿
+
+转译
+＼ ESCAPE
+
+安全等于
+<=>
+
+order by desc(asc)
+
+长度 length()
+拼接 concat()
+大写 upper()
+小写 lower()
