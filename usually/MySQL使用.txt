@@ -412,3 +412,43 @@ DROP
     ALTER DATABASE 库名 CHARACTER SET utf-8
     DROP DATABASE IF EXISTS 库名；
 
+修改字段名
+    ALTER TABLE 表名 CHANGE COLUMN 字段名 新字段名 字段类型
+修改列类型
+    ALTER TABLE 表名 MODIFY COLUMN 字段名 新字段类型
+添加新列
+    ALTER TABLE 表名 ADD COLUMN 字段名 字段类型
+删除列
+    ALTER TABLE 表名 DROP COLUMN 字段名
+
+删除表
+    DROP TABLE 表名；
+
+复制表
+    仅复制结构
+        CREATE TABLE 表名 LIKE 被复制表名
+    复制结构和数据
+        CREATE TABLE 表名 SELECT 需要复制的字段 FROM 被复制表名；
+
+类型选用原则：所选择的类型越简单越好，空间占用越小越好
+
+整型：
+    TINYINT(1 2^(8*1)-1)
+    SMALLINT(2 2^(8*2)-1)
+    MEDIUMINT(3 2^(8*3)-1)
+    INT/INTEGER(4 2^(8*4)-1)
+    BIGINT(8 2^(8*8)-1)
+
+小数：
+    浮点型：FLOAT(M,D)(4) DOUBLE(M,D)(8)
+    定点数：DECIMAL(M,D)
+    特点：
+        1、M:整数位数+小数位数，D:小数位数，如果超出范围，则插入临界值
+        2、MD可省略，decimal默认是(10，0)，float和double会根据插入的数据精度来决定精度
+        3、定点型精度较高，在货币运算等要求精度较高的可以使用
+
+字符串：
+    写法                  M的意思                   特点             空间消耗     效率
+    CHAR(M 0-255)        最大字符数，可省略，默认1     固定长度的字符     较消耗       高
+    VARCHAR(M 0-65535)   最大字符数，不可省略         可变长度的字符     较节约       低
+    还有ENUM,SET,BINARY,VARBINARY(二进制),TEXT,BLOB(二进制)
