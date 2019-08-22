@@ -438,6 +438,10 @@ DROP
     MEDIUMINT(3 2^(8*3)-1)
     INT/INTEGER(4 2^(8*4)-1)
     BIGINT(8 2^(8*8)-1)
+    特点：
+        1、默认有符号，设置无符号需要添加UNSIGNED关键字
+        2、若插入的数值超出整型范围，会报out of range 异常，并插入临界值
+        3、若不设置长度，会有默认长度，长度代表了显示的最大宽度，如果不够会用0在左边填充，但必须搭配zerofill使用
 
 小数：
     浮点型：FLOAT(M,D)(4) DOUBLE(M,D)(8)
@@ -452,3 +456,11 @@ DROP
     CHAR(M 0-255)        最大字符数，可省略，默认1     固定长度的字符     较消耗       高
     VARCHAR(M 0-65535)   最大字符数，不可省略         可变长度的字符     较节约       低
     还有ENUM,SET,BINARY,VARBINARY(二进制),TEXT,BLOB(二进制)
+
+日期：
+    DATE,TIME,YEAR
+                字节    范围          时区等的影响
+    DATETIME    8      1000-9999     不受
+    TIMESTAMP   4      1970-2038     受
+
+
