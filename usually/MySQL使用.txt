@@ -626,4 +626,27 @@ DROP
             ELSE 返回的值n
             END;
         3、if结构，只能用于BEGIN END中
-            IF 条件
+            IF 条件1 THEN 语句1
+            ELSEIF 条件2 THEN 语句2
+            ...
+            [ELSE 语句n]
+            END IF;
+    循环结构:
+        分类:WHILE,LOOP,REPEAT
+        循环控制:
+            ITERATE 类似于 continue
+            LEAVE 类似于 break
+        1、while
+            [标签:]while 循环条件 do
+                循环体;
+            end while [标签];
+        2、loop
+            [标签:]loop
+                循环体;
+            END loop [标签:];
+        3、repeat
+            [标签:]repeat
+                循环体;
+            UNTIL 结束循环的条件
+            END repeat [标签];
+    顺序结构
