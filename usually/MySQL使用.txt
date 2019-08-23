@@ -464,3 +464,106 @@ DROP
     TIMESTAMP   4      1970-2038     受
 
 
+约束：主要分为六大类
+    NOT NULL
+    DEFAULT
+    PRIMARY KEY:主键，保证数据唯一性，不可为空，每个表只有一个
+    UNIQUE:唯一约束，可为空，每个表中可以有多个
+    CHECK：mysql不支持
+    FOREIGN KEY
+
+    约束的添加类型
+        列级约束：六大约束语法上都支持，但外键约束没有效果
+        表级约束：除了非空、默认，其它都支持；语法： CONSTRAINT 约束名 约束类型(字段名)
+
+标识列：
+    AUTO_INCREMENT,必须与key搭配使用，而且一个表中至多只有一个标识列，且类型必须为数值类型
+
+事务：
+    A:原子性
+    C:一致性
+    I:隔离性
+    D:持久性
+
+    步骤1：开启事务
+        SET AUTOCOMMIT = 0;
+        START TRANSACTION;
+    步骤2：
+        编写事务中的sql语句(SELECT,INSERT,UPDATE,DELETE)
+    步骤3：结束事务
+        COMMIT;提交事务
+        ROLLBACK;回滚事务
+
+    SAVEPOINT 节点名; 设置保存点，只可搭配rollback; rollback to 节点名;
+
+    脏读：一个事务读取了另一个事务修改但未提交的数据
+    不可重复读：一个事务读取两次，前后数据值不一致
+    幻读：一个事务读取了另一个事务插入但未提交的数据
+
+    查看当前库的事务的隔离级别
+        SELECT @@tx_isolation;
+    设置事务隔离级别
+        SET SESSION(GLOBAL) TRANSACTION ISOLATION LEVEL read committed;
+    隔离级别：
+        read uncommitted
+        read committed:可避免脏读
+        repeatable read:可避免脏读和不可重复度
+        serializable(串行化):可避免脏读，不可重复读和幻读，但会阻塞其它事务对该表进行insert，update，delete操作
+
+视图：
+    CREATE VIEW 视图名
+    AS 
+    查询语句
+
+    CREATE OR REPLACE VIEW 视图名
+    AS
+    查询语句
+
+    ALTER VIEW 视图名
+    AS
+    查询语句
+
+    DROP VIEW 视图名，视图名
+
+    具备以下特点不允许被更新：
+        包含以下关键字：分组函数，distinct，GROUP BY,having,union,union all
+
+变量：
+    系统变量：
+        全局变量：所有会话，但重启将失效
+        会话变量：当前会话
+        语法：
+            1、查看所以的系统变量：SHOW GLOBAL|[SESSION] variables;
+            2、查看满足条件的部分系统变量：SHOW GLOBAL|[SESSION] variables LIKE '';
+            3、查看指定的某个系统变量的值：SELECT @@GLOBAL|[SESSION].系统变量名;
+            4、为某个系统变量赋值：SET GLOBAL|[SESSION] 系统变量名 = 值;
+                              SET @@GLOBAL|[SESSION].系统变量名 = 值;
+    自定义变量：
+        用户变量：当前会话有效，可以在任意地方使用
+            语法：
+                1、声明并初始化
+                    SET @用户变量名=值;
+                    SET @用户变量名:=值;
+                    SELECE @用户变量名:=值;
+                2、赋值
+                    SET @用户变量名=值;
+                    SET @用户变量名:=值;
+                    SELECE @用户变量名:=值;
+                    SELECT 字段值 INTO @变量名 FROM 表名;
+                3、使用
+                    SELECT @用户变量名;
+        局部变量：仅仅在定义它的begin end 中有效，只能放在begin end中的第一句话
+            语法：
+                1、声明
+                    DECLARE 变量名 类型;
+                    DECLARE 变量名 类型 DEFAULT 值;
+                2、赋值
+                    SET 局部变量名=值;
+                    SET 局部变量名:=值;
+                    SELECE @局部变量名:=值;
+                    SELECT 字段值 INTO 局部变量名 FROM 表名;
+                3、使用
+                    SELECT 局部变量名;
+
+
+存储过程
