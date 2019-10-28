@@ -1,4 +1,4 @@
-
+﻿
 ifconfig	查看服务器ip等信息
 
 su root		进入root权限
@@ -16,6 +16,7 @@ cat /etc/issue	查看Linux系统版本
 df -h 	查看磁盘剩余空间
 
 du -s	仅显示总计，只列出最后加总的值
+du -sh *
 
 ls -l ==>ll	列出文件和文件夹的详细信息。
 ls -lh		列出可读文件和文件夹详细信息。
@@ -140,11 +141,37 @@ scp -P port	file_source file_target 指定数据传输用到的端口号
 
 =============================================================
 
+ssh	[-l user][-p port][user@]hostname	远程登录指定服务器
+
+more fileName	显示文本文件的内容，支持vi中的关键字定位操作
+less -l fileName	与more命令相似，允许用户向前或向后浏览文件，-l：搜索时忽略大小写的差异
+
+===============================抓包命令==============================
+
+tcpdump tcp -i any port xxx -w a.cap
+
+tcpdump dst host 172.16.7.206 and port 80 -w /tmp/xxx.cap
+dst 用于指定目标路径
+src 用于指定源路径
+
+tcpdump tcp -i eth1 -t -s 0 -c 100 and dst port ! 22 and src net 192.168.1.0/24 -w ./target.cap
+
+(1)tcp: ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型
+(2)-i eth1 : 只抓经过接口eth1的包
+(3)-t : 不显示时间戳
+(4)-s 0 : 抓取数据包时默认抓取长度为68字节。加上-S 0 后可以抓到完整的数据包
+(5)-c 100 : 只抓取100个数据包
+(6)dst port ! 22 : 不抓取目标端口是22的数据包
+(7)src net 192.168.1.0/24 : 数据包的源网络地址为192.168.1.0/24
+(8)-w ./target.cap : 保存成cap文件，方便用ethereal(即wireshark)分析
 
 
+在AIX环境抓包
+iptrace -d 10.1.10.56 -p 8080 -b trace.log
+ipreport trace.log >t.log
+vi t.log
 
-
-
+=============================================================
 
 
 

@@ -1,3 +1,24 @@
+﻿
+-------------------------- git 处理如下报错问题 --------------------------
+1、stderr: error:bad signature
+fatal: index file corrupt
+
+处理方式：
+输入：$ rm -f .git/index
+在输入：$ git reset
+
+-------------------------- 将本地项目推送到远程仓库 --------------------------
+
+git init
+git add README.md
+git commit -m "first commit"
+#注意https://github.com/geeryJiang/demo.git需要手动在github上创建
+git remote add origin https://github.com/geeryJiang/demo.git
+git push -u origin master
+
+-------------------------- 将本地项目推送到远程仓库 --------------------------
+
+git add -f filename	强制添加到版本控制
 
 git help <命令>	==》git <命令> --help	查看某命令的帮助文档
 
@@ -32,6 +53,7 @@ git branch -r		查看远程分支
 git branch -d <branchName>	删除本地分支
 
 git push origin :<branchName> 删除远程分支
+git push origin --delete <branchName> 删除远程分支
 
 git branch --set-upstream-to=origin/<branch> work_branch 为这个分支设置跟踪信息
 
@@ -57,7 +79,7 @@ git fetch			抓取远程仓库更新
 git reset [--soft | --mixed | --hard]	
 git reset HEAD <filename>
 
-git rever filename	反转撤销提交。撤销最近的一次提交（commit）
+git rever <commit>	反转撤销某次已经push到远程的提交
 
 git commit --amend	修改最近一次commit的注解
 
@@ -68,6 +90,9 @@ git rebase --continue	解决rebase冲突后使用该命令继续rebase过程
 
 git config --global user.name ''	修改提交者名称
 git config --global user.emmail 	修改提交者邮箱
+
+git config --global --edit
+git commit --amend --reset-author
 
 tig				查看所有历史修改
 tig show {id}	查看某次提交记录

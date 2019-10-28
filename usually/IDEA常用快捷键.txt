@@ -1,0 +1,8 @@
+Ctrl+n 查找类
+Ctrl+alt+b 查看实现
+Alt+enter 补全等号左边代码
+shift+enter 另起一行
+Ctrl+alt+l 格式化代码
+Ctrl+z 删除光标所在行
+psvm main方法的快捷键
+sout system.out的快捷键

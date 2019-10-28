@@ -1,12 +1,67 @@
+﻿
+在服务器上查看MYSQL的版本
+	mysql --help|grep Distrib
+	
+默认表名
+	如：select * from dual ...;
+	
+设置自动提交
+SET SESSION AUTOCOMMIT=0	自动提交
+SET SESSION AUTOCOMMIT=1	手动提交
+
+锁表
+SET SESSION AUTOCOMMIT=1	手动提交
+update tableName set id=id where id=id;
+commit;
+
+新建数据表
+CREATE TABLE `TABLE_NAME`(
+	`ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字段注释信息',
+	`fieldName` type DEFAULT NULL COMMENT '字段注释信息',
+	`fieldName` type DEFAULT NULL COMMENT '字段注释信息',
+	PRIMARY KEY (`ID`),
+	UNIQUE KEY `uniquekeyName` (`fieldName`,`fieldName`...)
+)ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=UTF8 COMMENT '表注释信息';
 
 插入语句：若表中有自增序列，则可以将该列置未‘0’ 或 ‘null’,这样mysql将会自动处理该列
-	如：insert into tableName values(0,'name');
+	如：INSERT INTO tableName values(0,'name');
+	INSERT INTO tableName(属性1，属性2...) SELECT '值1','值2'... FROM tableName WHERE ...
+	
+	向数据库中插入特殊符号，需要特殊处理
+	例：insert into table values('{\"jymd\":\"3004\",\"dqdh\":\"04\"}');
+	
+	
+更新数据：
+	UPDATE [LOW_PRIORITY] [IGNORE] tableName
+	SET assignment_list
+	[WHERE where_condition]
+	[ORDER BY ...]
+	[LIMIT ROW_COUNT]
+
+删除表
+	DROP TABLE tableName;
+
+清除表中所有的数据，但不删除表
+	DELETE TABLE tableName;
+
+删除数据
+	DELETE [LOW_PRIORITY] [QUICK] [IGNORE]
+	FROM
+	  tbl_name [PARTITION (partition_name[,partition_name]...)]
+	[WHERE where_condition ]
+	[ORDER BY ...]
+	[LIMIT ROW_COUNT];
+
 	
 向表中添加字段
-	ALTER TABLE tableName ADD fieldName type
+	ALTER TABLE tableName ADD fieldName type DEFAULT COMMENT;
+	
+	ALTER TABLE tableName ADD (fieldName type DEFAULT COMMENT,fieldName type DEFAULT COMMENT,...);
 	
 表中删除字段
-	ALTER TABLE tableName DROP fieldName
+	ALTER TABLE tableName DROP fieldName;
+	
+	ALTER TABLE tableName DROP fieldName,DROP fieldName,...;
 	
 修改表中的字段名：
 	ALTER TABLE tableName CHANGE oldFieldName newFieldName type
@@ -41,18 +96,569 @@ DATE类型转换为STRING类型
 	
 拼接两个字段
 	SELECT CONCAT('1','2');
+
+
+索引
+	在mysql中若更新条件为非索引字段，则在做update操作时将对整张表进行锁定
 	
-查看查询语句中索引使用情况
-	EXPLAIN SELECT * FROM TABLE_NAME WHERE ...
-	EXPLAIN列的解释：
-		table:显示这一行的数据是关于哪张表的
-		type:显示连接使用了何种类型。从最好到最差的连接类型为const，eq_reg，ref，range，indexhe和all
-		possible_keys:显示可能应用在这张表中的索引，如果为空，没有可用的索引。可以为相关的域从WHERE语句中选择一个合适的语句
-		key:实际使用的索引。如果为NULL，则没有使用索引。很少的情况下，MYSQL会选择优化不足的索引。这种情况下，可以在select语句中使用USE INDEX (indexname) 来强制使用一个索引或者用IGNORE INDEX (indexname) 来强制MYSQL忽略索引
-		key_len:使用的索引的长度，在不损失精确性的情况下，长度越短越好
-		ref:显示索引的哪一列被使用了，如果可能的话，是一个常数
-		rows:MYSQL认为必须检查的用来返回请求数据的行数
-		Extra:关于MQSQL如何解析查询的额外信息。
+	注意：索引字段长度不能超过767个字节，故varchar类型最多可以设置为255
 	
+	索引类型：
+		primary:主键索引
+		unique:唯一索引
+		index或key:普通索引
+		fulltext:全文索引
+		
+	添加索引:
+		ALTER TABLE 表名 ADD 索引类型(primary,unique,index) [索引名](字段名(长度),字段名(长度)...);//此处‘长度’为某字段添加索引的长度，及短索引
+		CREATE 索引类型(unique,index) 索引名 ON 表名(字段名,字段名...);
 	
-	
+	删除索引:
+		DROP INDEX 索引名 ON 表名;
+		ALTER TABLE 表名 DROP INDEX 索引名;
+		
+	索引使用技巧：
+		1.索引不会包含有null的列
+			只要列中包含有null值，都将不会被包含在索引中，复合索引中只要有一列含有null值，那么这一列对于复合索引就是无效的。
+		2.使用短索引
+			如果有一个char(255)的列，如果在前10个或者20个字符内，多数值是唯一的，那么就不要对整个列进行索引，使用短索引。
+		3.like语句操作
+			一般情况下不要使用like操作，若要使用，like '%aaa%'不会使用索引，而 like 'aaa%'可以使用索引
+		4.不适用 NOT IN 、<>、!=操作，但<,<=,=,>,>=,BETWEEN,IN是可以使用索引的
+		5.不要在列上进行运算
+		6.索引要建立在经常进行select操作的字段上
+		7.索引要建立在值比较唯一的字段上
+		8.对于那些定义为text，image，和bit数据类型的列不应该增加索引。
+		9.在where和join中出现的列需要建立索引
+		10.若where子句的查询条件里使用了函数，则索引无效
+		11.在join操作中，mysql只有在主键和外键的数据类型相同时，才能使用索引，否则索引无效
+		
+	缺点：
+		索引会降低更新表的速度，因为更新表时，mysql不仅要保存数据，还要保存一下索引文件。
+		建立索引会占用磁盘空间的索引文件
+		
+	查看查询语句中索引使用情况
+		EXPLAIN SELECT * FROM TABLE_NAME WHERE ...
+		EXPLAIN列的解释：
+			table:显示这一行的数据是关于哪张表的
+			type:显示连接使用了何种类型。从最好到最差的连接类型为const，eq_reg，ref，range，indexhe和all
+			possible_keys:显示可能应用在这张表中的索引，如果为空，没有可用的索引。可以为相关的域从WHERE语句中选择一个合适的语句
+			key:实际使用的索引。如果为NULL，则没有使用索引。很少的情况下，MYSQL会选择优化不足的索引。这种情况下，可以在select语句中使用USE INDEX (indexname) 来强制使用一个索引或者用IGNORE INDEX (indexname) 来强制MYSQL忽略索引
+			key_len:使用的索引的长度，在不损失精确性的情况下，长度越短越好
+			ref:显示索引的哪一列被使用了，如果可能的话，是一个常数
+			rows:MYSQL认为必须检查的用来返回请求数据的行数
+			Extra:关于MQSQL如何解析查询的额外信息。
+		
+Limit 使用，获取指定结果集数量
+SELECT * FROM tableName LIMIT [offset,]rows|rows;
+
+mysql中使用正则表达式（REGEXP）
+SELECT * FROM tbl_dept WHERE id REGEXP '正则表达式';
+
+select count(1) from t_test where test1=1 and respmsg not in (select respmsg from t_test where respmsg like '可用%' or respmsg like '通用%');
+
+数据备份
+select * from tableName into outfile "/opt/..."(路径) fields terminated by "|";
+
+数据还原
+load data infile "/opt/..." replace into table tableName fields terminated by "|";
+
+创建存储过程
+CREATE PROCEDURE pro_name(in num int)
+BEGIN
+DECLARE a <= num DO
+INSERT INTO tbl_dept (dept_name) VALUES ('开发部');
+SET a = a + 1;
+END WHILE;
+END
+
+调用存储过程
+CALL pro_name(1);
+
+删除存储过程
+DROP PROCEDURE pro_name;
+
+删除重复数据只保留一条
+DELETE 
+FROM
+  t_clr_task_ctl 
+WHERE 
+  channel_id = '30' 
+AND id NOT IN 
+  (
+    SELECT 
+     ct.minId 
+    FROM
+       (
+         SELECT 
+           MIN(id) AS minId 
+         FROM
+           t_clr_task_ctl 
+         WHERE 
+           channel_id = '30' 
+         GROUP BY CODE
+        ) ct
+   ) ;
+
+DELETE 
+FROM
+  t_clr_task_ctl 
+WHERE 
+  id IN
+  (SELECT t.id FROM (
+      SELECT
+          tc.id
+      FROM
+          t_clr_task_ctl tc
+      WHERE
+          tc.channel_id = '30'
+      AND tc.code IN
+          (
+	       SELECT
+	           tc1.code
+	       FROM
+	           t_clr_task_ctl tc1
+	       WHERE
+	           tc1.channel_id = '30'
+	       GROUP BY
+	           tc1.code
+	       HAVING
+	           COUNT(*) > 1
+	   )
+      AND tc.id NOT IN
+	   (
+	       SELECT
+	           MIN(tc1.id)
+	       FROM
+	           t_clr_task_ctl tc1
+	       WHERE
+	           tc1.channel_id = '30'
+	       GROUP BY
+	           tc1.code
+	       HAVING
+	           COUNT(*) > 1
+	   )
+      ) t );
+
+
+查看表结构
+DESC 表名/视图名
+
+显示支持的存储引擎
+show engines
+
+show variables like ''
+
+去重
+distinct
+
+> < = <> != >= <=	
+
+and or not 
+
+in like between and
+
+占位符
+%  ＿
+
+转译
+＼ ESCAPE
+
+安全等于
+<=>
+
+order by desc(asc)
+
+长度 length()
+拼接 concat('a','b')
+大写 upper('joHn')
+小写 lower('joHn')
+截取 substr('abhd',3)
+截取 substr('abhd',1,3)
+获取下标 instr('dbsnjs','s')
+去空格 trim(' sjjsj ')
+去前后a trim('a' from 'aaaasjjsaajaaa')
+左填充 lpad('殷素素',10,'*')
+又填充 rpad('殷素素',10,'*')
+替换 replace('张三'，'三'，'四')
+
+四舍五入
+round(1.65)
+round(1.657,2)
+
+向上取整
+cell()
+
+向下取整
+floor()
+
+截取
+truncate(1.65,1)
+
+取余
+mod()
+
+日期函数
+now()
+curdate()
+curtime()
+year()
+month()
+monthname()
+
+%Y(四位年)
+%y(两位年)
+%m(月01-12)
+%c(月1-12)
+%d(日01...)
+%H(小时24)
+%h(小时12)
+%i(分00-59)
+%s(秒00-59)
+
+str_to_date('1964-03-2','%Y-%c-%d')
+
+date_format
+
+数据库版本
+version()
+
+仓库
+datebase()
+
+用户
+user()
+
+
+以下函数null将不参与运算
+SUM()
+AVG()
+MIN()
+MAX()
+COUNT()
+
+SELECT 查询列表
+FROM 表1 [连接类型]
+JOIN 表2
+ON 连接条件
+[WHERE 筛选条件]
+[GROUP BY 分组]
+[HAVING 筛选条件]
+[ORDER BY 排序列表]
+
+连接类型：
+内连接：INNER
+外连接：
+    左外：LEFT [OUTER]
+    右外：RIGHT [OUTER]
+    全外：FULL [OUTER]
+交叉连接：CROSS
+
+
+子查询：
+    SELECT 后面：
+        只支持标量子查询(结果集只有一行一列)
+    FROM 后面：
+        表子查询(结果集一般有多行多列)
+    WHERE 或 HAVING 后面：
+        标量子查询
+        列子查询(结果集有一列多行)
+        行子查询(结果集有一行多列)
+    EXISTS
+        表子查询
+    标量子查询一般搭配单行操作符使用如：> < >= <= = <>
+    列子查询一般搭配多行操作符使用如：IN,ANY/SOME,ALL
+    子查询先于主查询
+
+
+分页查询
+    SELECT 查询列表 FROM 表名
+    [WHERE 分组前条件
+     GROUP BY 分组字段
+     HAVING 分组后条件
+     ORDER BY]
+    LIMIT 起始索引，条数；
+
+    公式：page显示页数，size每页条数
+    SELECT 查询列表
+    FROM 表名
+    LIMIT (page-1)*size,size
+
+UNION联合查询
+    查询语句1
+    UNION
+    查询语句2
+
+    特点：
+        1、要求多条查询语句的查询列数保持一致
+        2、要求多条查询语句查询的每一列的类型和顺序最好一致
+        3、union关键字默认去重，union all 可以包含重复项
+
+TRUNCATE语句
+    TRUNCATE TABLE 表名；
+    该语句不允许添加WHERE条件
+    该语句不支持回滚
+
+INSERT
+UPDATE
+DELETE
+
+CREATE
+ALTER
+DROP
+
+创建库
+    CREATE DATABASE IF NOT EXISTS 库名；
+    ALTER DATABASE 库名 CHARACTER SET utf-8
+    DROP DATABASE IF EXISTS 库名；
+
+修改字段名
+    ALTER TABLE 表名 CHANGE COLUMN 字段名 新字段名 字段类型
+修改列类型
+    ALTER TABLE 表名 MODIFY COLUMN 字段名 新字段类型
+添加新列
+    ALTER TABLE 表名 ADD COLUMN 字段名 字段类型
+删除列
+    ALTER TABLE 表名 DROP COLUMN 字段名
+
+删除表
+    DROP TABLE 表名；
+
+复制表
+    仅复制结构
+        CREATE TABLE 表名 LIKE 被复制表名
+    复制结构和数据
+        CREATE TABLE 表名 SELECT 需要复制的字段 FROM 被复制表名；
+
+类型选用原则：所选择的类型越简单越好，空间占用越小越好
+
+整型：
+    TINYINT(1 2^(8*1)-1)
+    SMALLINT(2 2^(8*2)-1)
+    MEDIUMINT(3 2^(8*3)-1)
+    INT/INTEGER(4 2^(8*4)-1)
+    BIGINT(8 2^(8*8)-1)
+    特点：
+        1、默认有符号，设置无符号需要添加UNSIGNED关键字
+        2、若插入的数值超出整型范围，会报out of range 异常，并插入临界值
+        3、若不设置长度，会有默认长度，长度代表了显示的最大宽度，如果不够会用0在左边填充，但必须搭配zerofill使用
+
+小数：
+    浮点型：FLOAT(M,D)(4) DOUBLE(M,D)(8)
+    定点数：DECIMAL(M,D)
+    特点：
+        1、M:整数位数+小数位数，D:小数位数，如果超出范围，则插入临界值
+        2、MD可省略，decimal默认是(10，0)，float和double会根据插入的数据精度来决定精度
+        3、定点型精度较高，在货币运算等要求精度较高的可以使用
+
+字符串：
+    写法                  M的意思                   特点             空间消耗     效率
+    CHAR(M 0-255)        最大字符数，可省略，默认1     固定长度的字符     较消耗       高
+    VARCHAR(M 0-65535)   最大字符数，不可省略         可变长度的字符     较节约       低
+    还有ENUM,SET,BINARY,VARBINARY(二进制),TEXT,BLOB(二进制)
+
+日期：
+    DATE,TIME,YEAR
+                字节    范围          时区等的影响
+    DATETIME    8      1000-9999     不受
+    TIMESTAMP   4      1970-2038     受
+
+
+约束：主要分为六大类
+    NOT NULL
+    DEFAULT
+    PRIMARY KEY:主键，保证数据唯一性，不可为空，每个表只有一个
+    UNIQUE:唯一约束，可为空，每个表中可以有多个
+    CHECK：mysql不支持
+    FOREIGN KEY
+
+    约束的添加类型
+        列级约束：六大约束语法上都支持，但外键约束没有效果
+        表级约束：除了非空、默认，其它都支持；语法： CONSTRAINT 约束名 约束类型(字段名)
+
+标识列：
+    AUTO_INCREMENT,必须与key搭配使用，而且一个表中至多只有一个标识列，且类型必须为数值类型
+
+事务：
+    A:原子性
+    C:一致性
+    I:隔离性
+    D:持久性
+
+    步骤1：开启事务
+        SET AUTOCOMMIT = 0;
+        START TRANSACTION;
+    步骤2：
+        编写事务中的sql语句(SELECT,INSERT,UPDATE,DELETE)
+    步骤3：结束事务
+        COMMIT;提交事务
+        ROLLBACK;回滚事务
+
+    SAVEPOINT 节点名; 设置保存点，只可搭配rollback; rollback to 节点名;
+
+    脏读：一个事务读取了另一个事务修改但未提交的数据
+    不可重复读：一个事务读取两次，前后数据值不一致
+    幻读：一个事务读取了另一个事务插入但未提交的数据
+
+    查看当前库的事务的隔离级别
+        SELECT @@tx_isolation;
+    设置事务隔离级别
+        SET SESSION(GLOBAL) TRANSACTION ISOLATION LEVEL read committed;
+    隔离级别：
+        read uncommitted
+        read committed:可避免脏读
+        repeatable read:可避免脏读和不可重复度
+        serializable(串行化):可避免脏读，不可重复读和幻读，但会阻塞其它事务对该表进行insert，update，delete操作
+
+视图：
+    CREATE VIEW 视图名
+    AS 
+    查询语句
+
+    CREATE OR REPLACE VIEW 视图名
+    AS
+    查询语句
+
+    ALTER VIEW 视图名
+    AS
+    查询语句
+
+    DROP VIEW 视图名，视图名
+
+    具备以下特点不允许被更新：
+        包含以下关键字：分组函数，distinct，GROUP BY,having,union,union all
+
+变量：
+    系统变量：
+        全局变量：所有会话，但重启将失效
+        会话变量：当前会话
+        语法：
+            1、查看所以的系统变量：SHOW GLOBAL|[SESSION] variables;
+            2、查看满足条件的部分系统变量：SHOW GLOBAL|[SESSION] variables LIKE '';
+            3、查看指定的某个系统变量的值：SELECT @@GLOBAL|[SESSION].系统变量名;
+            4、为某个系统变量赋值：SET GLOBAL|[SESSION] 系统变量名 = 值;
+                              SET @@GLOBAL|[SESSION].系统变量名 = 值;
+    自定义变量：
+        用户变量：当前会话有效，可以在任意地方使用
+            语法：
+                1、声明并初始化
+                    SET @用户变量名=值;
+                    SET @用户变量名:=值;
+                    SELECE @用户变量名:=值;
+                2、赋值
+                    SET @用户变量名=值;
+                    SET @用户变量名:=值;
+                    SELECE @用户变量名:=值;
+                    SELECT 字段值 INTO @变量名 FROM 表名;
+                3、使用
+                    SELECT @用户变量名;
+        局部变量：仅仅在定义它的begin end 中有效，只能放在begin end中的第一句话
+            语法：
+                1、声明
+                    DECLARE 变量名 类型;
+                    DECLARE 变量名 类型 DEFAULT 值;
+                2、赋值
+                    SET 局部变量名=值;
+                    SET 局部变量名:=值;
+                    SELECE @局部变量名:=值;
+                    SELECT 字段值 INTO 局部变量名 FROM 表名;
+                3、使用
+                    SELECT 局部变量名;
+
+存储过程：
+    语法：
+        创建
+            CREATE PROCEDURE 存储过程名(参数列表)
+            BEGIN
+                存储过程体(一组合法的sql语句)
+            END
+        调用
+            CALL 存储过程名(实参列表);
+        删除
+            DROP PROCEDURE 存储过程名;
+        查看
+            SHOW CREATE PROCEDURE 存储过程名;
+    注意：
+        1、参数列表包含三部分：参数模式 参数名 参数类型，参数模式：in，out，inout
+        2、存储过程体中每条sql必须以分号结尾，存储过程的结尾可以使用delimiter重新设置;delimiter 结束标记;
+    例：
+        CREATE PROCEDURE myp(in name varchar(20),in pwd varchar(20),out boname varchar(20),out newpwd varchar(20))
+        BEGIN
+            SELECT bo.name,bo.pwd INTO boname,newpwd
+            FROM bo
+            WHERE ...;
+        END;
+
+函数
+    语法：
+        创建
+            CREATE FUNCTION 函数名(参数列表) RETURNS 返回类型
+            BEGIN
+                函数体
+            END
+        调用
+            SELECT 函数名(实参列表)
+        删除
+            DROP FUNCTION 函数名;
+        查看
+            SHOW CREATE FUNCTION 函数名;
+    注意：
+        1、参数名 参数类型
+        2、函数体：建议将return语句放在函数体最后，若没有或不在最后也不会报错，但不建议，有且只有一个返回值
+
+流程控制结构
+    分支结构：
+        1、if函数
+            IF(表达式1,表达式2,表达式3):如果表达式1成立则返回表达式2的值，否则返回表达式3的值
+        2、case结构
+            CASE 变量|表达式|字段
+            WHEN 要判断的值 THEN 返回的值1[或语句1];
+            WHEN 要判断的值 THEN 返回的值2[或语句2];
+            ...
+            ELSE 返回的值n
+            END;
+            
+            或
+            CASE
+            WHEN 条件1 THEN 返回的值1[或语句1]
+            WHEN 条件2 THEN 返回的值2[或语句2];
+            ...
+            ELSE 返回的值n
+            END;
+        3、if结构，只能用于BEGIN END中
+            IF 条件1 THEN 语句1
+            ELSEIF 条件2 THEN 语句2
+            ...
+            [ELSE 语句n]
+            END IF;
+    循环结构:
+        分类:WHILE,LOOP,REPEAT
+        循环控制:
+            ITERATE 类似于 continue
+            LEAVE 类似于 break
+        1、while
+            [标签:]while 循环条件 do
+                循环体;
+            end while [标签];
+        2、loop
+            [标签:]loop
+                循环体;
+            END loop [标签:];
+        3、repeat
+            [标签:]repeat
+                循环体;
+            UNTIL 结束循环的条件
+            END repeat [标签];
+    顺序结构
+
+mysql查询条件中的“<>”符号不包括为空的数据，故在查询的时候需要注意。
+
+mysql中update或delete语句的where条件中若没有索引列，则将导致锁表;
+insert语句中插入的表若没有索引列，则将导致锁表;
+注意：当索引为index且该列重复率高时mysql将认为该列索引无效。
+
+mysql中添加字段、删除字段都不会锁表，但修改字段属性则会引起表锁。
+
+mysql中若存在行锁，再获取表锁时将会等待行锁释放后才能会得到。
+
+mysql中除了InnoDB其它存储引擎都只有表锁。

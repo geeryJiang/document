@@ -1,0 +1,23 @@
+生成dump文件
+	jmap -dump:format=b,file=jamp_core_`hostname`.log `ps -ef | grep java | grep -v grep | awk '{print $2}'`
+jmap常用命令
+	1.查看整个jvm内存状态：jmap -heap[pid]
+	2.查看jvm堆中对象详细占用情况：jmap -histo[pid]
+	3.导出内存信息文件：jmap -dump:format=b,file=test.dump [pid]
+	
+	
+java启动参数
+-server 设置jvm启动模式
+-Xmx4g 设置虚拟机内存堆的最大可用大小
+-Xms4g 设置虚拟机内存堆的初始大小
+-Xmn256m 设置年轻带大小
+-XX:PermSize=128m 设置非堆区初始内存大小
+-Xss256k 设置线程栈的大小
+-XX:+DisableExplicitGC 禁止代码中显示调用GC
+-XX:+UseConcMarkSweepGC 对老生代采用并发标记交换算法进行GC
+-XX:+CMSParallelRemarkEnabled 降低标记停顿
+-XX:UseCMSCompactAtFullCollection 在full GC时，对老年代的压缩
+-XX:LargePageSizeInBytes=128m 内存页的大小
+-XX:+UseFastAccessorMetthods 原始类型的快速优化
+-XX:+UseCMSInitiatingOccupancyOnly 关闭CMS根据自己的预测自动执行垃圾回收
+-XX:CMSInitiatingOccupancyFraction=70 设置老年代回收阀值

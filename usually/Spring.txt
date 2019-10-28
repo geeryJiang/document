@@ -1,0 +1,3 @@
+
+Spring的配置文件中<bean>标签里的init-method为初始化方法，destroy-method为销毁方法，
+注解：@PostConstruct初始化方法的注解，@PreDestroy为销毁方法的注解

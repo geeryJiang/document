@@ -1,4 +1,6 @@
 
+设置eclipes快捷键window -> Preferences -> General -> Keys
+
 shift+alt+j		生成方法注释
 
 alt+shift+o		打开高亮显示
@@ -7,4 +9,13 @@ ctrl+shift+t
 
 ctrl+shift+r
 
-ctrl+shift+
+Ctrl+2,L	等号左边自动补齐快捷键
+Ctrl+alt+/	等号左边自动补齐快捷键
+
+Alt + ↑/↓	向上/下移动选中代码
+
+syso 
+
+main
+
+shift+enter 下一行
