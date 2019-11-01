@@ -662,3 +662,11 @@ mysql中添加字段、删除字段都不会锁表，但修改字段属性则会
 mysql中若存在行锁，再获取表锁时将会等待行锁释放后才能会得到。
 
 mysql中除了InnoDB其它存储引擎都只有表锁。
+
+查询所有城市都存在的商店类型
+SELECT DISTINCT store_type FROM stores s1
+  WHERE NOT EXISTS (
+    SELECT * FROM cities WHERE NOT EXISTS (
+      SELECT * FROM cities_stores
+       WHERE cities_stores.city = cities.city
+       AND cities_stores.store_type = stores.store_type));
