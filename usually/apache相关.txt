@@ -1,16 +1,20 @@
-Ìí¼Óapache×ª·¢¸ºÔØ
-ÔÚ/opt/apache2063/dist/conf/finance/homepage.confÎÄ¼şÖĞÌí¼Ó
+å®‰è£…apache
+yum -y install httpd httpd-devel httpd-manual httpd-tools
+
+
+æ·»åŠ apacheè½¬å‘è´Ÿè½½
+åœ¨/opt/apache2063/dist/conf/finance/homepage.confæ–‡ä»¶ä¸­æ·»åŠ 
 ProxyPass /cib-clear-mock-web balancer://proxy2/
 <Proxy balancer://proxy2>
     BalancerMember http://10.1.22.245:8080/cib-clear-mock-web/
     BalancerMember http://10.1.22.76:8080/cib-clear-mock-web/
 </Proxy>
 
-ÉèÖÃKeepAliveTimeoutµÈ²ÎÊı
-ĞŞ¸Ä/opt/apache2063/dist/conf/extra/httpd-default.confÖĞÏà¹Ø²ÎÊı
-È»ºó½«/opt/apache2063/dist/conf/httpd.confÖĞµÄ#Include conf/extra/httpd-default.conf´ò¿ª
+è®¾ç½®KeepAliveTimeoutç­‰å‚æ•°
+ä¿®æ”¹/opt/apache2063/dist/conf/extra/httpd-default.confä¸­ç›¸å…³å‚æ•°
+ç„¶åå°†/opt/apache2063/dist/conf/httpd.confä¸­çš„#Include conf/extra/httpd-default.confæ‰“å¼€
 
-¹Ø±ÕÃüÁî
+å…³é—­å‘½ä»¤
 ps -ef | grep httpd | awk '{print $2}' | xargs kill -9
-Æô¶¯ÃüÁî
+å¯åŠ¨å‘½ä»¤
 ./httpd -k start
