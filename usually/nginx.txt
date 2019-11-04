@@ -63,6 +63,41 @@ server {
 EOF
 
 修改index.html
+mkdir -p /var/www/html/pub/
+tee /var/www/html/pub/index.html <<-'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+<title>YYPT - Publish Resources</title>
+</head>
+<body>
+The resource publish website.
+</body>
+</html>
+EOF
+
+修改日志目录权限：
+mkdir -p /data/log/nginx
+chown -R nginx:nginx /data/log/nginx
+chmod -R 755 /data/log/nginx
+
+随系统启动自动运行
+systemctl enable nginx
+禁止随系统启动自动运行
+systemctl disable nginx
+
+启动nginx服务
+systemctl start nginx
+关闭nginx服务
+systemctl stop nginx
+
+重启nginx服务
+systemctl restart nginx
+
+检查nginx进程
+ps -ef | grep nginx
+
+http://[ip]/pub/
 
 
 
