@@ -88,11 +88,17 @@ systemctl disable nginx
 
 启动nginx服务
 systemctl start nginx
+或
+service nginx start
 关闭nginx服务
 systemctl stop nginx
+或
+service nginx stop
 
 重启nginx服务
 systemctl restart nginx
+或
+service nginx reload
 
 检查nginx进程
 ps -ef | grep nginx
