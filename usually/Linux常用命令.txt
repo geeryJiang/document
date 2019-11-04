@@ -60,6 +60,8 @@ find	在指定目录下查找文件
 	find | xargs grep -ri ""	查询当前文件目录下的所有文件中是否有某个字符串
 	find | xargs grep -ri "" -l	查询当前文件目录下的所有文件中是否有某个字符串,只显示文件名
 
+安装telnet 
+yum install telnet
 
 telnet(选项)(参数)		登录远程主机对远程主机进行管理
 telnet [ip] [端口]		登录远程主机
