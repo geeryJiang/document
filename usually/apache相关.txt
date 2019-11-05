@@ -26,6 +26,9 @@ service httpd start
 <VirtualHost>:
 包含仅适用于特定主机名或IP地址的指令。
 
+<Proxy>:
+应用于代理资源的指令的容器。
+
 include：
 从服务器配置文件中包含其他配置文件。
 
