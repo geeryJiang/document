@@ -6,3 +6,8 @@ Ctrl+alt+l 格式化代码
 Ctrl+z 删除光标所在行
 psvm main方法的快捷键
 sout system.out的快捷键
+
+idea部署web项目：
+1、点击edit configurations
+2、添加tomcat（server）配置
+3、Deployment配置，主要配置Deploy at the server startup和application context
