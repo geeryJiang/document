@@ -1,9 +1,12 @@
-Ctrl+n 查找类
-Ctrl+alt+b 查看实现
 Alt+enter 补全等号左边代码
 shift+enter 另起一行
-Ctrl+alt+l 格式化代码
-Ctrl+z 删除光标所在行
+ctrl+shift+r 通过文件名查找文件
+ctrl+shift+t 通过类名查找类
+alt+\ 补全方法
+ctrl+t 查看接口实现
+
+
+
 psvm main方法的快捷键
 sout system.out的快捷键
 
@@ -11,3 +14,4 @@ idea部署web项目：
 1、点击edit configurations
 2、添加tomcat（server）配置
 3、Deployment配置，主要配置Deploy at the server startup和application context
+
