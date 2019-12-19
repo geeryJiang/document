@@ -1,4 +1,4 @@
-Alt+enter 补全等号左边代码
+Alt+shift+l 补全等号左边代码
 shift+enter 另起一行
 ctrl+shift+r 通过文件名查找文件
 ctrl+shift+t 通过类名查找类
