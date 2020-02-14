@@ -673,6 +673,7 @@ SELECT DISTINCT store_type FROM stores s1
        AND cities_stores.store_type = stores.store_type));
 
 查询数据库各个表所占用的内存
+USE information_schema;
 select table_name,table_rows,data_length+index_length,concat(round((data_length+index_length)/1024/1024,2),'MB') data from tables where table_schema='employees';
 
 
