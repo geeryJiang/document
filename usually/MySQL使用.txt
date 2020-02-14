@@ -166,7 +166,8 @@ load data infile "/opt/..." replace into table tableName fields terminated by "|
 创建存储过程
 CREATE PROCEDURE pro_name(in num int)
 BEGIN
-DECLARE a <= num DO
+DECLARE a INT UNSIGNED DEFAULT 1
+WHILE a <= num DO
 INSERT INTO tbl_dept (dept_name) VALUES ('开发部');
 SET a = a + 1;
 END WHILE;
@@ -670,3 +671,9 @@ SELECT DISTINCT store_type FROM stores s1
       SELECT * FROM cities_stores
        WHERE cities_stores.city = cities.city
        AND cities_stores.store_type = stores.store_type));
+
+查询数据库各个表所占用的内存
+select table_name,table_rows,data_length+index_length,concat(round((data_length+index_length)/1024/1024,2),'MB') data from tables where table_schema='employees';
+
+
+
