@@ -15,3 +15,9 @@ idea部署web项目：
 2、添加tomcat（server）配置
 3、Deployment配置，主要配置Deploy at the server startup和application context
 
+idea乱码问题：
+1、首先是编辑器的乱码，这个很好解决，file->settings->appearence里面有个Name设置成支持中文的字 体(这个很重要)
+
+idea在项目跟目录下添加文件夹之后需要进行如下操作
+右键新增的文件夹->Mark directory as
+
