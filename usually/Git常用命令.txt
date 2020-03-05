@@ -79,6 +79,9 @@ git fetch			抓取远程仓库更新
 git reset [--soft | --mixed | --hard]	
 git reset HEAD <filename>
 
+取消merging状态
+git reset --
+
 git rever <commit>	反转撤销某次已经push到远程的提交
 
 git commit --amend	修改最近一次commit的注解
