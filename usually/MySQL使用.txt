@@ -676,5 +676,5 @@ SELECT DISTINCT store_type FROM stores s1
 USE information_schema;
 select table_name,table_rows,data_length+index_length,concat(round((data_length+index_length)/1024/1024,2),'MB') data from tables where table_schema='employees';
 
-
-
+显示表各字段的字符集等信息
+SHOW FULL COLUMNS FROM table_name
