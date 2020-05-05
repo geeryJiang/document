@@ -1,4 +1,9 @@
-﻿
+修改mysql数据库用户设置使使用该用户可以进行远程登陆：使用root用户进行操作
+USE mysql;
+SELECT * FROM USER WHERE USER='mytest';
+UPDATE USER SET HOST = '%' WHERE USER ='mytest' AND HOST='127.0.0.1';
+FLUSH PRIVILEGES;
+
 在服务器上查看MYSQL的版本
 	mysql --help|grep Distrib
 	
