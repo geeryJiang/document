@@ -264,6 +264,8 @@ and or not
 
 in like between and
 
+FIND_IN_SET(str,strlist)
+
 占位符
 %  ＿
 
