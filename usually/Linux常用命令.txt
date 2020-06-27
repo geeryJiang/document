@@ -185,7 +185,56 @@ get -r filename
 
 =============================================================
 
+===============================docker命令==============================
 
+7以上版本设置防火墙开放端口
+firewall-cmd --zone=public --add-port=8888/tcp --permanent
+firewall-cmd --reload
+firewall-cmd --list-port
 
+7以上版本修改网络设置
+nmtui
+vim ifcfg-ens33
+service network restart
+
+docker安装相关
+uname -r
+yum install docker
+systemctl start docker
+docker -v
+systemctl enable docker
+systemctl stop docker
+systemctl start docker
+
+docker镜像加速相关
+vim daemon.json
+systemctl daemon-reload
+systemctl restart docker
+
+docker images
+docker ps
+docker ps -a
+docker logs tomcat
+docker search mysql
+docker start 5d155d713312
+docker stop 5d155d713312
+docker rm 5d155d713312
+
+docker pull tomcat:7.0.104-jdk8-adoptopenjdk-openj9
+docker run --name mytomcat -d -p 8080:8080 tomcat:7.0.104-jdk8-adoptopenjdk-open9
+
+docker pull mysql:5.6.48
+docker run --name mysql01 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.6.48
+
+docker pull docker.io/redis
+docker run -d -p 6379:6379 --name myRedis docker.io/redis
+
+docker pull docker.io/elasticsearch:2.4.6
+docker run -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d -p 9200:9200 -p 9300:9300 --name ES01 elasticsearch:2.4.6
+
+docker pull docker.io/zookeeper
+docker run --name zk01 -p 2181:2181 --restart always -d zookeeper
+
+=============================================================
 
 
