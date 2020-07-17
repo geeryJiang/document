@@ -706,3 +706,14 @@ select table_name,table_rows,data_length+index_length,concat(round((data_length+
 
 显示表各字段的字符集等信息
 SHOW FULL COLUMNS FROM table_name
+
+查看数据库编码集
+show variables like '%char%';
+
+修改mysql编码集，配置文件/etc/my.cnf。
+[mysqld]
+character-set-server=utf8 
+[client]
+default-character-set=utf8 
+[mysql]
+default-character-set=utf8

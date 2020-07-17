@@ -219,6 +219,7 @@ docker search mysql
 docker start 5d155d713312
 docker stop 5d155d713312
 docker rm 5d155d713312
+docker restart 5d155d713312
 
 docker pull tomcat:7.0.104-jdk8-adoptopenjdk-openj9
 docker run --name mytomcat -d -p 8080:8080 tomcat:7.0.104-jdk8-adoptopenjdk-open9
@@ -234,6 +235,13 @@ docker run -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d -p 9200:9200 -p 9300:9300 --na
 
 docker pull docker.io/zookeeper
 docker run --name zk01 -p 2181:2181 --restart always -d zookeeper
+
+// 修改应用的系统参数，以mysql为例
+docker exec -it 468bfb5e0cd8 /bin/bash
+cd /etc/mysql
+apt-get update
+apt-get install vim
+如果要退出bash有2种操作：1）Ctrl + d 退出并停止容器；2）Ctrl + p + q 退出并在后台运行容器；
 
 =============================================================
 

@@ -71,6 +71,8 @@ git merge branchName 将branchName分支合并到当前分支上，默认commit
 
 git merge branchName --no-commit	将branchName分支合并到当前分支上，不commit
 
+git merge branchName --ff-only 使用快进合并，如果快进失败则中止，不产生提交记录
+
 git pull			抓取远程仓库所有分支更新并合并到本地
 
 git fetch			抓取远程仓库更新
