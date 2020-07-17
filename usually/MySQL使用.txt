@@ -28,6 +28,14 @@ CREATE TABLE `TABLE_NAME`(
 	UNIQUE KEY `uniquekeyName` (`fieldName`,`fieldName`...)
 )ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=UTF8 COMMENT '表注释信息';
 
+DROP TABLE IF EXISTS `t_`;  
+CREATE TABLE t_ (  
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  create_time CHAR(14) NOT NULL COMMENT '创建时间yyyyMMddHHmmss',
+  update_time CHAR(14) NOT NULL COMMENT '修改时间yyyyMMddHHmmss',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='';  
+
 插入语句：若表中有自增序列，则可以将该列置未‘0’ 或 ‘null’,这样mysql将会自动处理该列
 	如：INSERT INTO tableName values(0,'name');
 	INSERT INTO tableName(属性1，属性2...) SELECT '值1','值2'... FROM tableName WHERE ...
