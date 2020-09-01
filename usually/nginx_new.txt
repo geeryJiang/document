@@ -97,5 +97,7 @@ chmod -R 755 /data/log/nginx
 chown -R nginx:nginx /var/log/nginx
 chmod -R 755 /var/log/nginx
 
-
+#使用nginx用户登陆
+/usr/sbin/nginx -c /etc/nginx/nginx.conf
+ps -ef | grep nginx
 
