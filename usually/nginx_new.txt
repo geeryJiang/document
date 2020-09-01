@@ -1,0 +1,101 @@
+useradd nginx
+passwd nginx
+#输入密码
+sed -i -e 's/^enabled=1$/enabled=0/' /etc/yum.repos.d/*.repo
+####################
+tee /etc/yum.repos.d/rhel-my.repo <<-'EOF'
+[rhel7.4]
+name=RHEL 7.4
+baseurl=http://127.0.0.1/xxx/x86_64
+enabled=1
+gpgcheck=0
+[rhel7.2]
+name=RHEL 7.2
+baseurl=http://127.0.0.1/xxx/x86_64
+enabled=0
+gpgcheck=0
+priority=1
+EOF
+####################
+yum -y update && yum -y upgrade
+yum -y update openssl openssl-libs
+openssl version
+#确认版本：OpenSSL 1.0.2k-fips 26 Jan 2017
+yum -y install nginx
+nginx -v
+#输出：nginx version:nginx/1.17.0
+mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf_`date+%Y%m%d`
+####################
+tee /etc/nginx/nginx.conf <<-'EOF'
+user nginx;
+worker_processes 4;
+error_log /data/log/nginx/error.log warn;
+pid         /etc/nginx/run.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    server_tokens off;
+    include    /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    log_format main '$remote_addr[$http_x_forwarded_for] [$time_iso8601] "request"' '$status $body_bytes_sent "http_referer" "$http_user_agent"';
+    sendfile          on;
+    #tcp_nopush  on;
+    keepalive_timeout 65;
+    gzip    on;
+    include /etc/nginx/conf.d/*.conf;
+}
+EOF
+####################
+mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf_`date+%Y%m%d`
+####################
+tee /etc/nginx/conf.d/default.conf <<-'EOF'
+server {
+    listen                80;
+    server_name     localhost;
+
+    if ($time_iso8601 ~ "^(\d{4})-(\d{2})-(\d{2})T(\d{2})") {
+        set $year $1;
+        set $month $2;
+        set $day $3;
+        set $hour $4;
+    }
+    access_log /data/log/nginx/$year$month$day-$hour-access.log main;
+
+    location ~ /pub/ {
+        add_header X-Frame-Options DENY;
+        add_header X-Content-Type-Options nosniff;
+    }
+
+    location /myweb/ {
+        proxy_pass http://172.0.0.1:8080/myweb1/;
+    }
+    root /var/www/html;
+}
+EOF
+####################
+mkdir -p /var/www/html/pub
+####################
+tee /var/www/html/pub/index.html <<-'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+<title>MYWEB - PUBLIC RESOURCES</title>
+<body>
+The resource publish website.
+</body>
+</head>
+</html>
+EOF
+####################
+chmod u+s /usr/sbin/nginx
+mkdir -p /data/log/nginx
+chown -R nginx:nginx /data/log/nginx
+chmod -R 755 /data/log/nginx
+chown -R nginx:nginx /var/log/nginx
+chmod -R 755 /var/log/nginx
+
+
+
