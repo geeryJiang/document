@@ -1,0 +1,109 @@
+安装
+升级OpenSSL
+yum -y uodate openssl openssl-libs
+
+执行版本检测命令
+openssl version
+
+执行nginx安装命令
+yum -y install nginx
+
+执行版本检查
+nginx -v
+
+配置
+修改nginx.conf配置
+tee /usr/local/nginx/conf/nginx.conf <<-'EOF'
+user nginx;
+worker_processes 4;
+error_log /data/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024
+}
+
+http {
+    server_tokens off;
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    log_format main '$remote_addr[$http_x_forwarded_for] [$time_iso8601] "$request" '
+                    '$status $body_types_sent "$http_referer" "$http_user_agent"';
+    sendfile on;
+    #tcp_nopush on;
+    keepalive_timeout 65;
+    gzip on;
+    include /usr/local/nginx/conf/*.conf;  
+}
+EOF
+
+修改default.conf
+tee /usr/local/nginx/conf.d/default.conf <<-'EOF'
+server {
+    listen 80;
+    server_name localhost;
+    if ($time_iso8601 ~ "^(\d{4})-(\d{2})-(\d{2})T(\d{2})") {
+        set $year $1;
+        set $month $2;
+        set $day $3;
+        set $hour $4;
+    }
+    access_log /data/log/nginx/$year$month$day-$hour-access.log main;
+    location ^~ /pub/ {
+        add_header X-Frame-Options DENY;
+        add_header X-Content-Type-Options nosniff;
+    }
+    location / {
+        proxy_pass http://127.0.0.1;
+        proxy_pass http://127.0.0.2;
+    }
+    root /var/www/html/;
+}
+EOF
+
+修改index.html
+mkdir -p /var/www/html/pub/
+tee /var/www/html/pub/index.html <<-'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+<title>YYPT - Publish Resources</title>
+</head>
+<body>
+The resource publish website.
+</body>
+</html>
+EOF
+
+修改日志目录权限：
+mkdir -p /data/log/nginx
+chown -R nginx:nginx /data/log/nginx
+chmod -R 755 /data/log/nginx
+
+随系统启动自动运行
+systemctl enable nginx
+禁止随系统启动自动运行
+systemctl disable nginx
+
+启动nginx服务
+systemctl start nginx
+或
+service nginx start
+关闭nginx服务
+systemctl stop nginx
+或
+service nginx stop
+
+重启nginx服务
+systemctl restart nginx
+或
+service nginx reload
+
+检查nginx进程
+ps -ef | grep nginx
+
+http://[ip]/pub/
+
+
+

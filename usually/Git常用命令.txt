@@ -71,6 +71,8 @@ git merge branchName 将branchName分支合并到当前分支上，默认commit
 
 git merge branchName --no-commit	将branchName分支合并到当前分支上，不commit
 
+git merge branchName --ff-only 使用快进合并，如果快进失败则中止，不产生提交记录
+
 git pull			抓取远程仓库所有分支更新并合并到本地
 
 git fetch			抓取远程仓库更新
@@ -78,6 +80,9 @@ git fetch			抓取远程仓库更新
 把不小心add进去的文件从staged状态取出来
 git reset [--soft | --mixed | --hard]	
 git reset HEAD <filename>
+
+取消merging状态
+git reset --
 
 git rever <commit>	反转撤销某次已经push到远程的提交
 
@@ -98,3 +103,12 @@ tig				查看所有历史修改
 tig show {id}	查看某次提交记录
 tig filename	查看某个文件所有历史修改
 
+
+-------------------------- 回滚指定文件到指定版本 --------------------------
+
+git reset 版本号 fileName
+git commit 
+
+-------------------------- 回滚指定文件到指定版本 --------------------------
+
+若想要指定用户clone，则使用http克隆

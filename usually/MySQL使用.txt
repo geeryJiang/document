@@ -1,4 +1,9 @@
-﻿
+修改mysql数据库用户设置使使用该用户可以进行远程登陆：使用root用户进行操作
+USE mysql;
+SELECT * FROM USER WHERE USER='mytest';
+UPDATE USER SET HOST = '%' WHERE USER ='mytest' AND HOST='127.0.0.1';
+FLUSH PRIVILEGES;
+
 在服务器上查看MYSQL的版本
 	mysql --help|grep Distrib
 	
@@ -22,6 +27,14 @@ CREATE TABLE `TABLE_NAME`(
 	PRIMARY KEY (`ID`),
 	UNIQUE KEY `uniquekeyName` (`fieldName`,`fieldName`...)
 )ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=UTF8 COMMENT '表注释信息';
+
+DROP TABLE IF EXISTS `t_`;  
+CREATE TABLE t_ (  
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  create_time CHAR(14) NOT NULL COMMENT '创建时间yyyyMMddHHmmss',
+  update_time CHAR(14) NOT NULL COMMENT '修改时间yyyyMMddHHmmss',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='';  
 
 插入语句：若表中有自增序列，则可以将该列置未‘0’ 或 ‘null’,这样mysql将会自动处理该列
 	如：INSERT INTO tableName values(0,'name');
@@ -94,9 +107,6 @@ DATE类型转换为STRING类型
 	当前日期加一分钟
 	SELECT CURTIME() AS ct,DATE_ADD(CURTIME(),INTERVAL '0 0:1:0' DAY_SECOND) AS ct1;
 	
-拼接两个字段
-	SELECT CONCAT('1','2');
-
 
 索引
 	在mysql中若更新条件为非索引字段，则在做update操作时将对整张表进行锁定
@@ -166,7 +176,8 @@ load data infile "/opt/..." replace into table tableName fields terminated by "|
 创建存储过程
 CREATE PROCEDURE pro_name(in num int)
 BEGIN
-DECLARE a <= num DO
+DECLARE a INT UNSIGNED DEFAULT 1
+WHILE a <= num DO
 INSERT INTO tbl_dept (dept_name) VALUES ('开发部');
 SET a = a + 1;
 END WHILE;
@@ -258,6 +269,8 @@ and or not
 
 in like between and
 
+FIND_IN_SET(str,strlist)
+
 占位符
 %  ＿
 
@@ -269,42 +282,384 @@ in like between and
 
 order by desc(asc)
 
-长度 length()
-拼接 concat('a','b')
-大写 upper('joHn')
-小写 lower('joHn')
-截取 substr('abhd',3)
-截取 substr('abhd',1,3)
-获取下标 instr('dbsnjs','s')
-去空格 trim(' sjjsj ')
-去前后a trim('a' from 'aaaasjjsaajaaa')
-左填充 lpad('殷素素',10,'*')
-又填充 rpad('殷素素',10,'*')
-替换 replace('张三'，'三'，'四')
-
-四舍五入
-round(1.65)
-round(1.657,2)
-
-向上取整
-cell()
-
-向下取整
-floor()
-
-截取
-truncate(1.65,1)
-
-取余
-mod()
-
-日期函数
-now()
-curdate()
-curtime()
-year()
-month()
-monthname()
+名称	描述
+&	按位与
+>	大于运算符
+>>	右移
+>=	大于或等于运算符
+<	少于运算符
+<>， !=	不等于运算符
+<<	左移
+<=	小于或等于运算符
+<=>	NULL安全等于运算符
+%， MOD	模运算符
+*	乘法运算符
++	加法运算符
+-	减号
+-	更改参数的符号
+/	部门运营商
+:=	赋值
+=	分配值（作为SET 语句的一部分 ，或作为语句的SET子句的 一部分UPDATE）
+=	平等算子
+^	按位异或
+ABS()	返回绝对值
+ACOS()	返回反余弦
+ADDDATE()	将时间值（间隔）添加到日期值
+ADDTIME()	加时间
+AES_DECRYPT()	使用AES解密
+AES_ENCRYPT()	使用AES加密
+AND， &&	逻辑与
+Area()	返回多边形或多多边形区域
+AsBinary()， AsWKB()	从内部几何格式转换为WKB
+ASCII()	返回最左边字符的数值
+ASIN()	返回反正弦
+AsText()， AsWKT()	从内部几何格式转换为WKT
+ATAN()	返回反正切
+ATAN2()， ATAN()	返回两个参数的反正切
+AVG()	返回参数的平均值
+BENCHMARK()	重复执行一个表达式
+BETWEEN ... AND ...	值是否在值范围内
+BIN()	返回包含数字的二进制表示形式的字符串
+BINARY	将字符串转换为二进制字符串
+BIT_AND()	按位返回AND
+BIT_COUNT()	返回设置的位数
+BIT_LENGTH()	返回参数的长度（以位为单位）
+BIT_OR()	按位返回OR
+BIT_XOR()	返回按位异或
+Buffer()	返回距几何指定距离内的点的几何
+CASE	案例运算符
+CAST()	将值强制转换为特定类型
+CEIL()	返回不小于参数的最小整数值
+CEILING()	返回不小于参数的最小整数值
+Centroid()	返回质心为点
+CHAR()	返回每个传递的整数的字符
+CHAR_LENGTH()	返回参数中的字符数
+CHARACTER_LENGTH()	CHAR_LENGTH（）的同义词
+CHARSET()	返回参数的字符集
+COALESCE()	返回第一个非NULL参数
+COERCIBILITY()	返回字符串参数的排序规则强制性值
+COLLATION()	返回字符串参数的排序规则
+COMPRESS()	以二进制字符串形式返回结果
+CONCAT()	返回串联的字符串
+CONCAT_WS()	返回用分隔符连接
+CONNECTION_ID()	返回连接的连接ID（线程ID）
+Contains()	一个几何的MBR是否包含另一个几何的MBR
+CONV()	在不同的基数之间转换数字
+CONVERT()	将值强制转换为特定类型
+CONVERT_TZ()	从一个时区转换到另一个时区
+COS()	返回余弦
+COT()	返回余切
+COUNT()	返回计数返回的行数
+COUNT(DISTINCT)	返回多个不同值的计数
+CRC32()	计算循环冗余校验值
+Crosses()	一个几何图形是否交叉
+CURDATE()	返回当前日期
+CURRENT_DATE()， CURRENT_DATE	CURDATE（）的同义词
+CURRENT_TIME()， CURRENT_TIME	CURTIME（）的同义词
+CURRENT_TIMESTAMP()， CURRENT_TIMESTAMP	NOW（）的同义词
+CURRENT_USER()， CURRENT_USER	经过身份验证的用户名和主机名
+CURTIME()	返回当前时间
+DATABASE()	返回默认（当前）数据库名称
+DATE()	提取日期或日期时间表达式的日期部分
+DATE_ADD()	将时间值（间隔）添加到日期值
+DATE_FORMAT()	指定格式日期
+DATE_SUB()	从日期中减去时间值（间隔）
+DATEDIFF()	减去两个日期
+DAY()	DAYOFMONTH（）的同义词
+DAYNAME()	返回工作日的名称
+DAYOFMONTH()	返回月份中的一天（0-31）
+DAYOFWEEK()	返回参数的工作日索引
+DAYOFYEAR()	返回一年中的某天（1-366）
+DECODE()	解码使用ENCODE（）加密的字符串
+DEFAULT()	返回表列的默认值
+DEGREES()	将弧度转换为度
+DES_DECRYPT()	解密字符串
+DES_ENCRYPT()	加密字符串
+Dimension()	几何尺寸
+Disjoint()	两个几何的MBR是否不相交
+DIV	整数除法
+ELT()	返回索引编号的字符串
+ENCODE()	编码字符串
+ENCRYPT()	加密字符串
+EndPoint()	LineString的终点
+Envelope()	返回几何的MBR
+Equals()	两个几何的MBR是否相等
+EXP()	提升力量
+EXPORT_SET()	返回一个字符串，这样对于值位中设置的每个位，您将获得一个打开的字符串，对于每个未设置的位，您将获得一个关闭的字符串
+ExteriorRing()	返回多边形的外圈
+EXTRACT()	提取部分日期
+ExtractValue()	使用XPath表示法从XML字符串中提取值
+FIELD()	后续参数中第一个参数的索引（位置）
+FIND_IN_SET()	第二个参数中第一个参数的索引（位置）
+FLOOR()	返回不大于参数的最大整数值
+FORMAT()	返回格式化为指定的小数位数的数字
+FOUND_ROWS()	对于带有LIMIT子句的SELECT，如果没有LIMIT子句，则将返回的行数
+FROM_BASE64()	解码base64编码的字符串并返回结果
+FROM_DAYS()	将天数转换为日期
+FROM_UNIXTIME()	将Unix时间戳记格式化为日期
+GeomCollFromText()， GeometryCollectionFromText()	从WKT返回几何集合
+GeomCollFromWKB()， GeometryCollectionFromWKB()	从WKB返回几何集合
+GeometryCollection()	从几何构造几何集合
+GeometryN()	从几何集合返回第N个几何
+GeometryType()	返回几何类型的名称
+GeomFromText()， GeometryFromText()	从WKT返回几何
+GeomFromWKB()， GeometryFromWKB()	从WKB返回几何
+GET_FORMAT()	返回日期格式字符串
+GET_LOCK()	获取命名锁
+GLength()	返回LineString的长度
+GREATEST()	返回最大参数
+GROUP_CONCAT()	返回串联的字符串
+GTID_SUBSET()	如果子集中的所有GTID也都已设置，则返回true；否则，返回false。否则为假。
+GTID_SUBTRACT()	返回集合中所有不在子集中的GTID。
+HEX()	十进制或字符串值的十六进制表示
+HOUR()	提取时间
+IF()	如果/其他构造
+IFNULL()	空if / else构造
+IN()	一个值是否在一组值内
+INET_ATON()	返回IP地址的数值
+INET_NTOA()	从数值返回IP地址
+INET6_ATON()	返回IPv6地址的数值
+INET6_NTOA()	从数值返回IPv6地址
+INSERT()	在指定位置插入子字符串，最多可指定字符数
+INSTR()	返回第一次出现的子串的索引
+InteriorRingN()	返回多边形的第N个内环
+Intersects()	两个几何的MBR是否相交
+INTERVAL()	返回小于第一个参数的参数的索引
+IS	针对布尔值测试值
+IS_FREE_LOCK()	命名锁是否免费
+IS_IPV4()	参数是否为IPv4地址
+IS_IPV4_COMPAT()	参数是否为IPv4兼容地址
+IS_IPV4_MAPPED()	参数是否为IPv4映射的地址
+IS_IPV6()	参数是否为IPv6地址
+IS NOT	针对布尔值测试值
+IS NOT NULL	非空值测试
+IS NULL	空值测试
+IS_USED_LOCK()	是否使用了命名锁；如果为true，则返回连接标识符
+IsClosed()	几何是否闭合且简单
+IsEmpty()	几何是否为空
+ISNULL()	测试参数是否为NULL
+IsSimple()	几何是否简单
+LAST_DAY	返回参数的月份的最后一天
+LAST_INSERT_ID()	最后一个INSERT的AUTOINCREMENT列的值
+LCASE()	LOWER（）的同义词
+LEAST()	返回最小的参数
+LEFT()	返回指定的最左边的字符数
+LENGTH()	返回字符串的长度（以字节为单位）
+LIKE	简单模式匹配
+LineFromText()， LineStringFromText()	从WKT构造LineString
+LineFromWKB()， LineStringFromWKB()	从WKB构造LineString
+LineString()	从Point值构造LineString
+LN()	返回参数的自然对数
+LOAD_FILE()	加载命名文件
+LOCALTIME()， LOCALTIME	NOW（）的同义词
+LOCALTIMESTAMP， LOCALTIMESTAMP()	NOW（）的同义词
+LOCATE()	返回子串第一次​​出现的位置
+LOG()	返回第一个参数的自然对数
+LOG10()	返回参数的以10为底的对数
+LOG2()	返回参数的以2为底的对数
+LOWER()	以小写形式返回参数
+LPAD()	返回字符串参数，用指定的字符串左填充
+LTRIM()	删除前导空格
+MAKE_SET()	返回一组逗号分隔的字符串，这些字符串在位中具有相应的位
+MAKEDATE()	从一年中的年月日创建日期
+MAKETIME()	从小时，分钟，秒创建时间
+MASTER_POS_WAIT()	阻塞直到副本已读取并应用所有更新到指定位置
+MATCH	执行全文搜索
+MAX()	返回最大值
+MBRContains()	一个几何的MBR是否包含另一个几何的MBR
+MBRDisjoint()	两个几何的MBR是否不相交
+MBREqual()	两个几何的MBR是否相等
+MBRIntersects()	两个几何的MBR是否相交
+MBROverlaps()	两个几何的MBR是否重叠
+MBRTouches()	两个几何的MBR是否接触
+MBRWithin()	一个几何的MBR是否在另一个几何的MBR内
+MD5()	计算MD5校验和
+MICROSECOND()	从参数返回微秒
+MID()	返回从指定位置开始的子字符串
+MIN()	返回最小值
+MINUTE()	返回参数的分钟
+MLineFromText()， MultiLineStringFromText()	从WKT构造MultiLineString
+MLineFromWKB()， MultiLineStringFromWKB()	从WKB构造MultiLineString
+MOD()	退还剩余
+MONTH()	返回经过日期的月份
+MONTHNAME()	返回月份名称
+MPointFromText()， MultiPointFromText()	从WKT构造MultiPoint
+MPointFromWKB()， MultiPointFromWKB()	从WKB构造MultiPoint
+MPolyFromText()， MultiPolygonFromText()	从WKT构造MultiPolygon
+MPolyFromWKB()， MultiPolygonFromWKB()	从WKB构造MultiPolygon
+MultiLineString()	从LineString值构造MultiLineString
+MultiPoint()	从Point值构造MultiPoint
+MultiPolygon()	从多边形值构造MultiPolygon
+NAME_CONST()	使列具有给定名称
+NOT， !	取反值
+NOT BETWEEN ... AND ...	值是否不在值范围内
+NOT IN()	一个值是否不在一组值内
+NOT LIKE	否定简单模式匹配
+NOT REGEXP	否REGEXP
+NOW()	返回当前日期和时间
+NULLIF()	如果expr1 = expr2，则返回NULL
+NumGeometries()	返回几何集合中的几何数量
+NumInteriorRings()	返回多边形内环的数量
+NumPoints()	返回LineString中的点数
+OCT()	返回包含数字的八进制表示形式的字符串
+OCTET_LENGTH()	LENGTH（）的同义词
+OLD_PASSWORD() （已弃用）	返回PASSWORD 4.1之前的实现的值
+OR， ||	逻辑或
+ORD()	返回参数最左边字符的字符代码
+Overlaps()	两个几何的MBR是否重叠
+PASSWORD()	计算并返回密码字符串
+PERIOD_ADD()	在一年的月份中添加一个期间
+PERIOD_DIFF()	返回期间之间的月数
+PI()	返回pi的值
+Point()	从坐标构造点
+PointFromText()	WKT的构造点
+PointFromWKB()	WKB的构造点
+PointN()	从LineString返回第N个点
+PolyFromText()， PolygonFromText()	从WKT构造多边形
+PolyFromWKB()， PolygonFromWKB()	从WKB构造多边形
+Polygon()	从LineString参数构造多边形
+POSITION()	LOCATE（）的同义词
+POW()	将自变量提高到指定的幂
+POWER()	将自变量提高到指定的幂
+PROCEDURE ANALYSE()	分析查询结果
+QUARTER()	从日期参数返回季度
+QUOTE()	转义要在SQL语句中使用的参数
+RADIANS()	返回参数转换为弧度
+RAND()	返回一个随机浮点值
+RANDOM_BYTES() （引入5.6.17）	返回一个随机字节向量
+REGEXP	字符串是否匹配正则表达式
+RELEASE_LOCK()	释放命名锁
+REPEAT()	重复字符串指定次数
+REPLACE()	替换出现的指定字符串
+REVERSE()	反转字符串中的字符
+RIGHT()	返回指定的最右边字符
+RLIKE	字符串是否匹配正则表达式
+ROUND()	围绕论点
+ROW_COUNT()	更新的行数
+RPAD()	将字符串追加指定次数
+RTRIM()	删除尾随空格
+SCHEMA()	DATABASE（）的同义词
+SEC_TO_TIME()	将秒转换为“ hh：mm：ss”格式
+SECOND()	返回第二个（0-59）
+SESSION_USER()	USER（）的同义词
+SHA1()， SHA()	计算SHA-1 160位校验和
+SHA2()	计算SHA-2校验和
+SIGN()	返回参数的符号
+SIN()	返回参数的正弦
+SLEEP()	睡觉几秒钟
+SOUNDEX()	返回soundex字符串
+SOUNDS LIKE	比较声音
+SPACE()	返回指定数量的字符串
+SQL_THREAD_WAIT_AFTER_GTIDS() （已弃用）	过时的 使用WAIT_FOR_EXECUTED_GTID_SET()。
+SQRT()	返回参数的平方根
+SRID()	返回几何的空间参考系统ID
+ST_Area()	返回多边形或多多边形区域
+ST_AsBinary()， ST_AsWKB()	从内部几何格式转换为WKB
+ST_AsText()， ST_AsWKT()	从内部几何格式转换为WKT
+ST_Buffer()	返回距几何指定距离内的点的几何
+ST_Centroid()	返回质心为点
+ST_Contains()	一个几何是否包含另一个
+ST_Crosses()	一个几何图形是否交叉
+ST_Difference()	两个几何的返回点设置差
+ST_Dimension()	几何尺寸
+ST_Disjoint()	一个几何是否与另一个几何不相交
+ST_Distance()	一种几何形状与另一种几何形状的距离
+ST_EndPoint()	LineString的终点
+ST_Envelope()	返回几何的MBR
+ST_Equals()	一个几何是否等于另一个
+ST_ExteriorRing()	返回多边形的外圈
+ST_GeomCollFromText()，ST_GeometryCollectionFromText()，ST_GeomCollFromTxt()	从WKT返回几何集合
+ST_GeomCollFromWKB()， ST_GeometryCollectionFromWKB()	从WKB返回几何集合
+ST_GeometryN()	从几何集合返回第N个几何
+ST_GeometryType()	返回几何类型的名称
+ST_GeomFromText()， ST_GeometryFromText()	从WKT返回几何
+ST_GeomFromWKB()， ST_GeometryFromWKB()	从WKB返回几何
+ST_InteriorRingN()	返回多边形的第N个内环
+ST_Intersection()	返回点设置两个几何的交点
+ST_Intersects()	一个几何是否相交
+ST_IsClosed()	几何是否闭合且简单
+ST_IsEmpty()	几何是否为空
+ST_IsSimple()	几何是否简单
+ST_LineFromText()， ST_LineStringFromText()	从WKT构造LineString
+ST_LineFromWKB()， ST_LineStringFromWKB()	从WKB构造LineString
+ST_NumGeometries()	返回几何集合中的几何数量
+ST_NumInteriorRing()， ST_NumInteriorRings()	返回多边形内环的数量
+ST_NumPoints()	返回LineString中的点数
+ST_Overlaps()	一个几何图形是否重叠
+ST_PointFromText()	WKT的构造点
+ST_PointFromWKB()	WKB的构造点
+ST_PointN()	从LineString返回第N个点
+ST_PolyFromText()， ST_PolygonFromText()	从WKT构造多边形
+ST_PolyFromWKB()， ST_PolygonFromWKB()	从WKB构造多边形
+ST_SRID()	返回几何的空间参考系统ID
+ST_StartPoint()	LineString的起点
+ST_SymDifference()	返回点设置两个几何的对称差
+ST_Touches()	一种几何是否接触另一种
+ST_Union()	返回点集两个几何的并集
+ST_Within()	一个几何是否在另一个几何之内
+ST_X()	返回点的X坐标
+ST_Y()	返回点的Y坐标
+StartPoint()	LineString的起点
+STD()	返回人口标准差
+STDDEV()	返回人口标准差
+STDDEV_POP()	返回人口标准差
+STDDEV_SAMP()	返回样品标准偏差
+STR_TO_DATE()	将字符串转换为日期
+STRCMP()	比较两个字符串
+SUBDATE()	用三个参数调用时DATE_SUB（）的同义词
+SUBSTR()	返回指定的子字符串
+SUBSTRING()	返回指定的子字符串
+SUBSTRING_INDEX()	在指定的定界符出现次数之前从字符串返回子字符串
+SUBTIME()	减去时间
+SUM()	返回总和
+SYSDATE()	返回函数执行的时间
+SYSTEM_USER()	USER（）的同义词
+TAN()	返回参数的正切值
+TIME()	提取传递的表达式的时间部分
+TIME_FORMAT()	格式化为时间
+TIME_TO_SEC()	返回参数转换为秒
+TIMEDIFF()	减去时间
+TIMESTAMP()	这个函数只有一个参数，它返回日期或日期时间表达式；有两个参数，参数的总和
+TIMESTAMPADD()	向日期时间表达式添加间隔
+TIMESTAMPDIFF()	从日期时间表达式中减去一个间隔
+TO_BASE64()	返回转换为以64为底的字符串的参数
+TO_DAYS()	返回日期参数转换为天
+TO_SECONDS()	返回从Year 0开始转换为秒的日期或日期时间参数
+Touches()	一种几何是否接触另一种
+TRIM()	删除前导和尾随空格
+TRUNCATE()	截断为指定的小数位数
+UCASE()	UPPER（）的同义词
+UNCOMPRESS()	解压字符串压缩
+UNCOMPRESSED_LENGTH()	返回压缩前的字符串长度
+UNHEX()	返回包含数字的十六进制表示形式的字符串
+UNIX_TIMESTAMP()	返回Unix时间戳
+UpdateXML()	返回替换的XML片段
+UPPER()	转换为大写
+USER()	客户端提供的用户名和主机名
+UTC_DATE()	返回当前UTC日期
+UTC_TIME()	返回当前UTC时间
+UTC_TIMESTAMP()	返回当前UTC日期和时间
+UUID()	返回通用唯一标识符（UUID）
+UUID_SHORT()	返回一个整数通用标识符
+VALIDATE_PASSWORD_STRENGTH()	确定密码强度
+VALUES()	定义在INSERT期间要使用的值
+VAR_POP()	返回总体标准方差
+VAR_SAMP()	返回样本方差
+VARIANCE()	返回总体标准方差
+VERSION()	返回指示MySQL服务器版本的字符串
+WAIT_UNTIL_SQL_THREAD_AFTER_GTIDS()	使用WAIT_FOR_EXECUTED_GTID_SET()。
+WEEK()	返回星期数
+WEEKDAY()	返回工作日索引
+WEEKOFYEAR()	返回日期的日历周（1-53）
+WEIGHT_STRING()	返回字符串的权重字符串
+Within()	一个几何的MBR是否在另一个几何的MBR内
+X()	返回点的X坐标
+XOR	逻辑异或
+Y()	返回点的Y坐标
+YEAR()	返回年份
+YEARWEEK()	返回年和周
+|	按位或
+~	按位反转
 
 %Y(四位年)
 %y(两位年)
@@ -402,6 +757,19 @@ TRUNCATE语句
 INSERT
 UPDATE
 DELETE
+
+MySQL删除数据几种情况以及是否释放磁盘空间
+1、drop table table_name 立刻释放磁盘空间 ，不管是 InnoDB和MyISAM
+2、truncate table table_name 立刻释放磁盘空间 ，不管是 Innodb和MyISAM 。
+truncate table其实有点类似于drop table 然后create。只不过这个create table 的过程做了优化，比如表结构文件之前已经有了等等，就不需要重新再搞一把。所以速度上应该是接近drop table的速度。
+3、对于delete from table_name  删除表的全部数据
+对于MyISAM 会立刻释放磁盘空间 （应该是做了特别处理，也比较合理）；
+InnoDB 不会释放磁盘空间
+4、对于delete from table_name where xxx带条件的删除
+不管是innodb还是MyISAM都不会释放磁盘空间。
+5、delete操作以后 使用optimize table table_name 会立刻释放磁盘空间。不管是InnoDB还是MyISAM 。
+所以要想达到清理数据的目的，请delete以后执行optimize table 操作。
+6、delete from表 以后虽然未释放磁盘空间，但是下次插入数据的时候，仍然可以使用这部分空间
 
 CREATE
 ALTER
@@ -662,3 +1030,29 @@ mysql中添加字段、删除字段都不会锁表，但修改字段属性则会
 mysql中若存在行锁，再获取表锁时将会等待行锁释放后才能会得到。
 
 mysql中除了InnoDB其它存储引擎都只有表锁。
+
+查询所有城市都存在的商店类型
+SELECT DISTINCT store_type FROM stores s1
+  WHERE NOT EXISTS (
+    SELECT * FROM cities WHERE NOT EXISTS (
+      SELECT * FROM cities_stores
+       WHERE cities_stores.city = cities.city
+       AND cities_stores.store_type = stores.store_type));
+
+查询数据库各个表所占用的内存
+USE information_schema;
+select table_name,table_rows,data_length+index_length,concat(round((data_length+index_length)/1024/1024,2),'MB') data from tables where table_schema='employees';
+
+显示表各字段的字符集等信息
+SHOW FULL COLUMNS FROM table_name
+
+查看数据库编码集
+show variables like '%char%';
+
+修改mysql编码集，配置文件/etc/my.cnf。
+[mysqld]
+character-set-server=utf8 
+[client]
+default-character-set=utf8 
+[mysql]
+default-character-set=utf8

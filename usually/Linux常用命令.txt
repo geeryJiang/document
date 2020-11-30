@@ -60,6 +60,8 @@ find	在指定目录下查找文件
 	find | xargs grep -ri ""	查询当前文件目录下的所有文件中是否有某个字符串
 	find | xargs grep -ri "" -l	查询当前文件目录下的所有文件中是否有某个字符串,只显示文件名
 
+安装telnet 
+yum install telnet
 
 telnet(选项)(参数)		登录远程主机对远程主机进行管理
 telnet [ip] [端口]		登录远程主机
@@ -174,8 +176,73 @@ vi t.log
 =============================================================
 
 
+===============================sftp命令==============================
+远程连接
+sftp -Oport=22 用户名@IP
 
+下载文件
+get -r filename
 
+=============================================================
 
+===============================docker命令==============================
+
+7以上版本设置防火墙开放端口
+firewall-cmd --zone=public --add-port=8888/tcp --permanent
+firewall-cmd --reload
+firewall-cmd --list-port
+
+7以上版本修改网络设置
+nmtui
+vim ifcfg-ens33
+service network restart
+
+docker安装相关
+uname -r
+yum install docker
+systemctl start docker
+docker -v
+systemctl enable docker
+systemctl stop docker
+systemctl start docker
+
+docker镜像加速相关
+vim daemon.json
+systemctl daemon-reload
+systemctl restart docker
+
+docker images
+docker ps
+docker ps -a
+docker logs tomcat
+docker search mysql
+docker start 5d155d713312
+docker stop 5d155d713312
+docker rm 5d155d713312
+docker restart 5d155d713312
+
+docker pull tomcat:7.0.104-jdk8-adoptopenjdk-openj9
+docker run --name mytomcat -d -p 8080:8080 tomcat:7.0.104-jdk8-adoptopenjdk-open9
+
+docker pull mysql:5.6.48
+docker run --name mysql01 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.6.48
+
+docker pull docker.io/redis
+docker run -d -p 6379:6379 --name myRedis docker.io/redis
+
+docker pull docker.io/elasticsearch:2.4.6
+docker run -e ES_JAVA_OPTS="-Xms256m -Xmx256m" -d -p 9200:9200 -p 9300:9300 --name ES01 elasticsearch:2.4.6
+
+docker pull docker.io/zookeeper
+docker run --name zk01 -p 2181:2181 --restart always -d zookeeper
+
+// 修改应用的系统参数，以mysql为例
+docker exec -it 468bfb5e0cd8 /bin/bash
+cd /etc/mysql
+apt-get update
+apt-get install vim
+如果要退出bash有2种操作：1）Ctrl + d 退出并停止容器；2）Ctrl + p + q 退出并在后台运行容器；
+
+=============================================================
 
 

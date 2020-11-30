@@ -1,16 +1,52 @@
-����apacheת������
-��/opt/apache2063/dist/conf/finance/homepage.conf�ļ�������
+安装apache
+yum -y install httpd httpd-devel httpd-manual httpd-tools
+
+
+添加apache转发负载
+在/opt/apache2063/dist/conf/finance/homepage.conf文件中添加
 ProxyPass /cib-clear-mock-web balancer://proxy2/
 <Proxy balancer://proxy2>
     BalancerMember http://10.1.22.245:8080/cib-clear-mock-web/
     BalancerMember http://10.1.22.76:8080/cib-clear-mock-web/
 </Proxy>
 
-����KeepAliveTimeout�Ȳ���
-�޸�/opt/apache2063/dist/conf/extra/httpd-default.conf����ز���
-Ȼ��/opt/apache2063/dist/conf/httpd.conf�е�#Include conf/extra/httpd-default.conf��
+设置KeepAliveTimeout等参数
+修改/opt/apache2063/dist/conf/extra/httpd-default.conf中相关参数
+然后将/opt/apache2063/dist/conf/httpd.conf中的#Include conf/extra/httpd-default.conf打开
 
-�ر�����
+关闭命令
 ps -ef | grep httpd | awk '{print $2}' | xargs kill -9
-��������
+或
+service httpd stop
+启动命令
 ./httpd -k start
+或
+service httpd start
+
+<VirtualHost>:
+包含仅适用于特定主机名或IP地址的指令。
+
+<Proxy>:
+应用于代理资源的指令的容器。
+
+include：
+从服务器配置文件中包含其他配置文件。
+
+includeOptional:
+该指令允许在服务器配置文件中包含其他配置文件。
+它的工作方式与Include指令相同，但是如果使用通配符，并且通配符与任何文件或目录不匹配，或者文件系统上不存在文件路径，那么它将被忽略(而不是导致错误)。
+
+ProxyRequests：
+这允许或阻止Apache httpd充当转发代理服务器。(将ProxyRequests设置为Off并不会禁用ProxyPass指令。)
+在典型的反向代理或网关配置中，应将此选项设置为Off。
+为了获得代理HTTP或FTP站点的功能，还需要在服务器中提供mod_proxy_http或mod_proxy_ftp(或两者都有)。
+为了获得(转发)代理HTTPS站点的功能，您需要在服务器中启用mod_proxy_connect。
+
+ProxyPass：
+将远程服务器映射到本地服务器url空间。
+该指令允许将远程服务器映射到本地服务器的空间。本地服务器不是传统意义上的代理，而是远程服务器的镜像。
+本地服务器通常称为反向代理或网关。该路径是本地虚拟路径的名称;url是远程服务器的部分url，不能包含查询字符串。
+
+ProxyPassReverse：
+调整从反向代理服务器发送的HTTP响应标头中的URL。
+
